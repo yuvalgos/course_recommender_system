@@ -1,1 +1,1 @@
-web: gunicorn course_recommender_system.wsgi
+web: gunicorn course_recommender_system.wsgi --log-file -

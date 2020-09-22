@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br><br>
+<center>
+    <form action="{% url 'add_courses' %}" method="post">
+        {% csrf_token %}
+        <button class="btn waves-effect waves-left" type="submit" name="action">הוסף קורסים
+            <i class="material-icons left">send</i>
+        </button>
+    </form>
+</center>
+{% endblock content %}

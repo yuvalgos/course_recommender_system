@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+     {{course.number_string}} {{course.name}}
+{% endblock title %}
+
+{% block content %}
+        <ul>
+            <li> <u>מידע:</u>
+                {{course.info}}
+                <br>
+
+            </li>
+            <li> <u>נקודות זכות:</u>
+                {{course.credit_points}}
+                <br>
+
+            </li>
+            <li> <u>מידע על הדירוג עםif </u>
+                {{course.credit_points}}
+            </li>
+
+        </ul>
+
+
+{% endblock content %}

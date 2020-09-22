@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+הוספת קורס:
+    {{course_name_and_number}}
+{% endblock title %}
+
+{% block content %}
+
+
+    <form name="myform" method="post" >
+        {% csrf_token %}
+        <ul>
+            <li>
+                רמת קושי:
+                <p class="range-field" dir="ltr">
+                 <input type="range" style="border-style: none;"  name="difficulty" id="difficulty"
+                        min="1" max="10" step="0.5" value="difficulty"/>
+                </p>
+            </li>
+
+            <li>
+                רמת עומס:
+                <p class="range-field" dir="ltr">
+                 <input type="range" style="border-style: none;"
+                        name="workload" id="workload" min="1" max="10" step="0.5"/>
+                </p>
+            </li>
+
+            <li>
+                ציון סופי (לא חובה):
+                <br>
+                <label>
+                    <input name="grade_radio_button" type="radio" value="show_grade" checked />
+                    <span></span>
+                </label>
+                <input type="number" width="80px" name="grade"
+                       value="grade" min="0" max="100" style="width: 4em"
+                        placeholder="ציון"/>
+                <br>
+                <label>
+                    <input name="grade_radio_button" value="dont_show_grade" type="radio"/>
+                    <span></span>
+                </label>
+                לא עניינכם
+            </li>
+        </ul>
+        <button class="btn waves-effect waves-left" type="submit" name="action">הוסף
+        <i class="material-icons left">library_add</i>
+
+        </button>
+    </form>
+
+<script>
+        var form = document.forms['myform'];
+    form.group1[0].onfocus = function () {
+        form.grade.disabled = false;
+    }
+    form.group1[1].onfocus = function () {
+        form.grade.disabled = true;
+    }
+</script>
+{% endblock content %}

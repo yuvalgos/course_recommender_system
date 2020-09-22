@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}
-{{ search_message| title }}
-{% endblock title %}
-
 {% block content %}
+    <h4 style="text-align: center"> {{ search_message| title }} </h4>
+
     {% for course in search_results %}
         <div class="card">
             <div class="card-content">
@@ -12,8 +10,7 @@
                 {{course.info}}
             </div>
             <div class="card-action">
-                <a href="course/{{course.number}}" style="color:#006064">לעמוד הקורס</a>
-                <a href="add_course_rating/{{course.number}}" style="color:#006064">הוסף דירוג לקורס</a>
+                <a href="/">לעמוד הקורס</a>
             </div>
         </div>
     {% endfor %}

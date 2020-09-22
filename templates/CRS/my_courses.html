@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{page_title}}
+{% endblock title %}
+
+{% block content %}
+    {% if total_credit != 0 %}
+    <p>סה"כ נקודות זכות:
+    {{total_credit}}</p>
+    {% endif %}
+
+    {% for course_rating in course_ratings %}
+        <div class="card">
+            <div class="card-content">
+                <h5>{{course_rating.course.name}},
+                    {{course_rating.course.number_string}}</h5>
+                <h6>נקודות זכות:
+                {{course_rating.course.credit_points}}</h6>
+                <ul>
+                    <li> רמת קושי:
+                        {{course_rating.difficulty}}
+                    </li>
+                    <li>רמת עומס:
+                        {{course_rating.workload}}
+                    </li>
+                    {% if course_rating.final_grade %}
+                        <li>
+                             ציון:
+                            {{course_rating.final_grade}}
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+            <div class="card-action">
+                <a href="../course/{{course_rating.course.number}}" style="color:#006064">לעמוד הקורס</a>
+                <a href="../edit_course_rating/{{course_rating.course.number}}" style="color:#006064">עריכת הדירוג</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}

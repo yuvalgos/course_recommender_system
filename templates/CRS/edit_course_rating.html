@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+עריכת הדירוג ל-
+{{course_name_and_number}}
+{% endblock title %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+     ניתן לבחור כל מספר בין 1 ל10, כולל נקודה עשרונית.
+    <p class="range-field" dir="ltr" style=>
+        <ul>
+        {{ form.as_ul }}
+        </ul>
+    </p>
+
+    <button class="btn waves-effect waves-left" type="submit" name="action">שמור
+    <i class="material-icons left">save</i>
+</form>
+
+{% endblock %}

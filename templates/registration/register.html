@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>הרשמה</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <ul>
+        {{user_form.as_ul}}
+        {{student_form.as_ul}}
+    </ul>
+    <input type="submit" value="Register">
+</form>
+
+<a href="{% url 'login' %}">Back to login</a>
+{% endblock %}

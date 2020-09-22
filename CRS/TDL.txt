@@ -1,0 +1,31 @@
+* add change password and email verification, use this guide :
+    https://realpython.com/django-user-management/#create-a-dashboard-view
+    and django doc (this guide uses older version of django)
+    -make finishes in registration process
+
+* go over todo marks
+
+* edit all forms :
+    -change label in forms to hebrew
+    -edit the form (default values, etc...)
+    -verification
+    -נראות
+
+* improve registration form data verifications (if you put '' to semster for example
+  you get an error)
+
+* check about social loging (use facebook and etc...) really not a must
+
+* make sure that going to /register/ page when log in gives an error or logs user off
+  because it causes problems when registering from loged in user
+
+* make faculty and path a drop-down list during registration (and give an option to choose other)
+
+* add semester taken to CourseRating forms
+
+long term:
+*refactor all code and add documentation if needed
+
+############################################################################
+a query to get stuent data efficently :
+ users = User.objects.all().select_related('profile')

@@ -1,0 +1,1 @@
+web: gunicorn course_recommender_system.wsgi

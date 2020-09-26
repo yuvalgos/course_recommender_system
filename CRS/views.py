@@ -156,6 +156,12 @@ def edit_course_rating(request, course_number):
         return redirect(reverse("my_courses"))
 
 
+@login_required
+def delete_course_rating(request, course_number):
+    get_object_or_404(models.Course, pk=course_number).delete()
+    return redirect(reverse("my_courses"))
+
+
 def course_view(request, course_number):
     course = get_object_or_404(models.Course, pk=course_number)
 

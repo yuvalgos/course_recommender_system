@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CRS',
     'materializecssform',
+    'django_celery_beat',
+
 ]
 
 MIDDLEWARE = [

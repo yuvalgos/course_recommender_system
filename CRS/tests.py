@@ -52,8 +52,10 @@ class RecommenderTimeTestCase(TestCase):
         algo = KNNBasic()
         trainset = data.build_full_trainset()
         algo.fit(trainset)
+        print("--->traning time : %s seconds " % (time.time() - start_time))
 
-        print("--- %s seconds ---" % (time.time() - start_time))
-
+        start_time = time.time()
+        pred = algo.predict(100, 100, r_ui=5, verbose=True)
+        print("--->prediction time : %s seconds " % (time.time() - start_time))
 
 

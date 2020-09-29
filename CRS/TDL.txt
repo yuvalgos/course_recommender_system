@@ -3,6 +3,8 @@
     and django doc (this guide uses older version of django)
     -make finishes in registration process
 
+* at courserating add and delete update rates count and average workload/difficulty
+
 * go over todo marks
 
 * site symbol

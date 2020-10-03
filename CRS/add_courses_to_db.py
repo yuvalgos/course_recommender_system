@@ -2,8 +2,10 @@ import pandas as pd
 import json
 from .models import Course
 
+
 # add courses from json to database
 def AddCoursesToDB(courses_json='CRS/courses.JSON'):
+
     fields = ["general.מספר מקצוע", "general.שם מקצוע", "general.נקודות", "general.סילבוס"]
 
     data = json.load(open(courses_json, encoding='utf-8'))
@@ -21,7 +23,7 @@ def AddCoursesToDB(courses_json='CRS/courses.JSON'):
                         number_string=row.number,
                         credit_points=row.credit,
                         info=row.sylabus)
-        print(course)
+        #print(course)
         # try:
         course.save()
         # except:
@@ -30,4 +32,13 @@ def AddCoursesToDB(courses_json='CRS/courses.JSON'):
     # print(sub_courses_df.loc[[1,200,300,400,500],:])
     # dest = path + filename
     # sub_courses_df.to_csv(dest, index=False, encoding='utf-8')
+
+
+def ClearCoursesDB():
+    courses = Course.objects.all()
+    for course in courses:
+        course.delete()
+
+
+
 

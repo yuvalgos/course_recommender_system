@@ -1,4 +1,5 @@
 import requests
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -8,7 +9,7 @@ from django.urls import reverse
 from . import models
 from .user.forms import *
 
-from .add_courses_to_db import AddCoursesToDB
+from .add_courses_to_db import AddCoursesToDB, ClearCoursesDB
 
 BASE_UG_COURSE_URL = 'https://ug3.technion.ac.il/rishum/course/'
 
@@ -89,12 +90,12 @@ def my_courses(request):
     current_user = request.user
     course_ratings = models.CourseRating.objects.filter(user=current_user).order_by('-updated_at')
 
-    if len(course_ratings) == 0 :
+    if len(course_ratings) == 0:
         page_title = "עדיין לא דירגת קורסים! חפש קורס והוסף לו דירוג."
         total_credit = 0
     else:
         page_title = "הקורסים שדירגת"
-        total_credit = sum(rating.course.credit_points for rating in course_ratings )
+        total_credit = sum(rating.course.credit_points for rating in course_ratings)
 
     data_to_show = {
         "course_ratings": course_ratings,
@@ -132,6 +133,23 @@ def add_course_rating(request, course_number):
         if request.POST.get('grade_radio_button') == "show_grade":
             course_rating.final_grade = request.POST.get('grade')
         course_rating.save()
+
+        # update course average rating:
+        if course.average_difficulty is None or course.average_workload is None:
+            # this is the first rating therefore it is the average
+            course.average_difficulty = course_rating.difficulty
+            course.average_workload = course_rating.workload
+        else:
+            # append new values to average by this formula
+            course.average_difficulty =\
+                (float(course.average_difficulty) * float(course.ratings_count) +
+                 float(course_rating.difficulty)) / (float(course.ratings_count) + 1)
+            course.average_workload = \
+                (float(course.average_workload) * float(course.ratings_count) +
+                 float(course_rating.workload)) / (float(course.ratings_count) + 1)
+        course.ratings_count = course.ratings_count + 1
+        course.save()
+
         return redirect(reverse("my_courses"))
 
 
@@ -146,19 +164,57 @@ def edit_course_rating(request, course_number):
         return render(
             request, "CRS/edit_course_rating.html",
             {"form": EditCourseRatingForm(instance=course_rating),
-             "course_name_and_number": course_name_and_number,}
+             "course_name_and_number": course_name_and_number, }
         )
 
     elif request.method == "POST":
         # todo: and if form is valid
+        old_diff = course_rating.difficulty
+        old_wl = course_rating.workload
+        print(old_diff)
         form = EditCourseRatingForm(request.POST, instance=course_rating)
         form.save()
+        new_diff = course_rating.difficulty
+        new_wl = course_rating.workload
+
+        # update course average ratings:
+        course_sum_diff = course.average_difficulty * float(course.ratings_count)
+        course_sum_wl = course.average_workload * float(course.ratings_count)
+        course_sum_diff = course_sum_diff - old_diff + new_diff
+        course_sum_wl = course_sum_wl - old_wl + new_wl
+        course.average_difficulty = course_sum_diff / float(course.ratings_count)
+        course.average_workload = course_sum_wl / float(course.ratings_count)
+        course.save()
+
         return redirect(reverse("my_courses"))
 
 
 @login_required
 def delete_course_rating(request, course_number):
-    get_object_or_404(models.Course, pk=course_number).delete()
+    print("-----------------------------------------------------here")
+    course = get_object_or_404(models.Course, pk=course_number)
+    course_rating = get_object_or_404(CourseRating,
+                                      course=course,
+                                      user=request.user)
+    old_difficulty = course_rating.difficulty
+    old_workload = course_rating.workload
+    course_rating.delete()
+
+    # update new course average:
+    if course.ratings_count == 1:
+        # it was the only rating for this course
+        course.average_difficulty = None
+        course.average_workload = None
+    else:
+        course_sum_diff = course.average_difficulty * float(course.ratings_count)
+        course_sum_wl = course.average_workload * float(course.ratings_count)
+        course_sum_diff = course_sum_diff - old_difficulty
+        course_sum_wl = course_sum_wl - old_workload
+        course.average_difficulty = course_sum_diff / float(course.ratings_count - 1)
+        course.average_workload = course_sum_wl / float(course.ratings_count - 1)
+    course.ratings_count = course.ratings_count - 1
+    course.save()
+
     return redirect(reverse("my_courses"))
 
 
@@ -172,10 +228,12 @@ def course_view(request, course_number):
 
 
 # ---------------------management:----------------------
+@staff_member_required
 def management(request):
     return render(request, template_name='CRS/management.html')
 
 
+@staff_member_required
 def add_courses(request):
     AddCoursesToDB()
     return redirect('management')

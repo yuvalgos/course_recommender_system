@@ -37,7 +37,8 @@ short term:
 * add "remove course rating" functionality
 
 long term:
-*refactor all code and add documentation if needed
+* refactor all code and add documentation if needed
+* implement online learning algorithem instead of using surprise library
 
 ############################################################################
 a query to get stuent data efficently :

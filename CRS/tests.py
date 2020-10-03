@@ -6,11 +6,12 @@ from django_pandas.io import read_frame
 from surprise import Reader
 from surprise import Dataset
 from surprise import KNNBasic
+from surprise import dump
 import time
 
-NUM_OF_USERS = 3000
+NUM_OF_USERS = 1000
 NUM_OF_COURSES = 1200
-RATINGS_PER_USER = 30
+RATINGS_PER_USER = 20
 
 
 class RecommenderTimeTestCase(TestCase):
@@ -24,7 +25,7 @@ class RecommenderTimeTestCase(TestCase):
                                   credit_points=3,)
 
         # create users:
-        for i in range(1,NUM_OF_USERS):
+        for i in range(1, NUM_OF_USERS):
             username = "user" + str(i)
             u = User.objects.create_user(username=username)
             u.student.credit_points = 100
@@ -56,6 +57,15 @@ class RecommenderTimeTestCase(TestCase):
 
         start_time = time.time()
         pred = algo.predict(100, 100, r_ui=5, verbose=True)
+        print(pred.est)
+        print(pred.details['was_impossible'])
         print("--->prediction time : %s seconds " % (time.time() - start_time))
 
+        start_time = time.time()
+        dump.dump("RecommenderDump", algo=algo, verbose=1)
+        print("--->algo dump time : %s seconds " % (time.time() - start_time))
+
+        start_time = time.time()
+        dump.load("RecommenderDump")
+        print("--->algo load time : %s seconds " % (time.time() - start_time))
 

@@ -80,3 +80,10 @@ class Search(models.Model):
 
     class Meta:
         verbose_name_plural = "Searches"
+
+
+class Faculty(models.Model):
+    faculty = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.faculty

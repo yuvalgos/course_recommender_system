@@ -1,16 +1,35 @@
 {% extends 'base.html' %}
 
+{% block title %}
+הרשמה
+{% endblock title %}
+
 {% block content %}
-<h2>הרשמה</h2>
+<style>
+.errorlist
+{
+    color: red;
+}
+</style>
+<!-- move that to css-->
+
 
 <form method="post">
     {% csrf_token %}
     <ul>
         {{user_form.as_ul}}
         {{student_form.as_ul}}
+        <li>
+            <button class="btn waves-effect waves-left" type="submit" value="register">
+                הרשם
+            <i class="material-icons left">keyboard_return</i>
+            </button>
+        </li>
     </ul>
-    <input type="submit" value="Register">
 </form>
-
-<a href="{% url 'login' %}">Back to login</a>
+<ul>
+<li>
+    <a href="{% url 'login' %}">כבר יש לי משתמש, מה אני עושה פה?? </a>
+</li>
+</ul>
 {% endblock %}

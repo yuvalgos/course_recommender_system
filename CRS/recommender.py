@@ -36,7 +36,7 @@ def train_recommender():
 
 
 # return value: (difficulty, workload, was imposible?? (tbd) )
-def get_recommendetion(user, course):
+def get_recommendation(user, course):
     algorithm_difficulty = dump.load("RecommenderDumpDiff")
     algorithm_workload = dump.load("RecommenderDumpWL")
 

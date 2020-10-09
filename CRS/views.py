@@ -65,23 +65,33 @@ def register(request):
     elif request.method == "POST":
         user_form = CustomUserCreationForm(request.POST)
         student_form = StudentRegForm(request.POST)
-        if user_form.is_valid():
+        if user_form.is_valid() and student_form.is_valid():
             user = user_form.save()
-            if student_form.is_valid():
-                # todo : validate data, probably going to have to do that in forms.py
-                #  maybe use student_form.cleaned_data or something similar and a for loop
-                #  example: https://stackoverflow.com/questions/42960271/not-null-constraint-failed-core-profile-user-id
+            # todo : validate data, probably going to have to do that in forms.py
+            #  maybe use student_form.cleaned_data or something similar and a for loop
+            #  example: https://stackoverflow.com/questions/42960271/not-null-constraint-failed-core-profile-user-id
 
-                user.student.faculty = student_form.data.get("faculty")
-                user.student.credit_points = student_form.data.get("credit_points")
-                user.student.semester = student_form.data.get("semester")
-                user.student.degree_path = student_form.data.get("degree_path")
+            user.student.credit_points = student_form.cleaned_data["credit_points"]
+            user.student.semester = student_form.cleaned_data["semester"]
+            user.student.degree_path = student_form.cleaned_data["degree_path"]
+            user.student.faculty = student_form.data.get("faculty")
+            # not using cleaned_data because clean data returns faculty model and student.faculty is saved as charfield
 
-                user.student.save()
-                return redirect(reverse("home"))
-
-    # one of the forms is not valid:
-    return redirect(reverse("error"))
+            user.student.save()
+            login(request, user)
+            return redirect(reverse("home"))
+        else:
+            # one of the forms is not valid:
+            print(user_form.errors)
+            print(student_form.errors)
+            error_list = str(user_form.errors) + str(student_form.errors)
+            print(student_form.errors)
+            return render(
+                request, "registration/register.html",
+                {"user_form": user_form,
+                 'student_form': student_form,
+                 'error_list': error_list}
+            )
 
 
 # show courses the courses rated by the user

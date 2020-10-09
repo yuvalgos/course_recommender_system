@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+התחברות
+{% endblock title %}
+
 {% block content %}
 
 {% if form.errors %}
@@ -11,7 +15,7 @@
     <p>Your account doesn't have access to this page. To proceed,
     please login with an account that has access.</p>
     {% else %}
-    <p>Please login to see this page.</p>
+    <p>התחבר כדי לצפות בדף זה</p>
     {% endif %}
 {% endif %}
 
@@ -19,21 +23,23 @@
 {% csrf_token %}
 <table>
 <tr>
-    <td>{{ form.username.label_tag }}</td>
+    <td>שם משתמש: </td>
     <td>{{ form.username }}</td>
 </tr>
 <tr>
-    <td>{{ form.password.label_tag }}</td>
+    <td>סיסמא: </td>
     <td>{{ form.password }}</td>
 </tr>
 </table>
+<button class="btn waves-effect waves-left" type="submit" value="login">
+    התחבר
+<i class="material-icons left">keyboard_return</i>
+</button>
 
-<input type="submit" value="login">
 <input type="hidden" name="next" value="{{ next }}">
 </form>
 
-{# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'register' %}">אני צריך להרשם</a></p>
 <p><a href="{% url 'password_reset' %}">וואלה שחכתי סיסמא</a></p>
 
-{% endblock %}
+{% endblock content%}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+נרשמת בהצלחה!
+{% endblock %}
+
+{% block content %}
+    {% if success %}
+        <p>אתה יכול להתחבר למשתמש שלך</p>
+    {% else %}
+        <p>שגיאה! הקישור לא פעיל</p>
+    {% endif %}
+
+{% endblock %}

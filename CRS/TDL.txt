@@ -1,6 +1,8 @@
 * change name to without system in heroku
+* change password in settings.py to envuirment variable
+    and set variable in heroku
 
-* set email server in settings.py
+* "verification email sent" page
 
 * edit all forms :
     -change label in forms to hebrew
@@ -8,11 +10,14 @@
     -verification
     -נראות
 
-*edit profile page
+* contact us page, using email
+
+* edit profile page
+
+* fix domain in settings when domain is known
 
 * make sure that going to /register/ page when log in gives an error or logs user off
-  because it causes problems when registering from loged in user
-
+  because it causes problems when registering from loged in us
 * add change password and email verification, use this guide :
     https://realpython.com/django-user-management/#create-a-dashboard-view
     and django doc (this guide uses older version of django)

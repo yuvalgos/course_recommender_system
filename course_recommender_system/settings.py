@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CRS',
     'materializecssform',
+    'django_email_verification',
 ]
 
 MIDDLEWARE = [
@@ -139,5 +140,22 @@ django_heroku.settings(locals())
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'TCourseRecommender@gmail.com'
+EMAIL_HOST_PASSWORD = 'oshsbrmmtqabevgf'
+
+
+EMAIL_ACTIVE_FIELD = 'is_active'
+EMAIL_SERVER = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_ADDRESS = 'TCourseRecommender@gmail.com'
+EMAIL_FROM_ADDRESS = 'noreply@TCourseRecommender.co.il'
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_MAIL_SUBJECT = 'Technion Course Recommender אשר את המשתמש'
+# EMAIL_MAIL_HTML = 'mail_body.html'
+EMAIL_MAIL_PLAIN = 'registration/verification_email.txt'
+EMAIL_PAGE_TEMPLATE = 'registration/confirm_template.html'
+EMAIL_PAGE_DOMAIN = 'http://127.0.0.1:8000/'

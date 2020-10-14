@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django_email_verification import sendConfirm
 
 from . import models
 from .user.forms import *
@@ -78,7 +79,8 @@ def register(request):
             # not using cleaned_data because clean data returns faculty model and student.faculty is saved as charfield
 
             user.student.save()
-            login(request, user)
+            sendConfirm(user) # sets EMAIL_ACTIVE_FIELD to false and sends confirmation email
+            # login(request, user)
             return redirect(reverse("home"))
         else:
             # one of the forms is not valid:

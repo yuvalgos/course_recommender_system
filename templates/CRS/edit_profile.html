@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+עריכת פרופיל משתמש
+{% endblock title %}
+
+{% block content %}
+<style>
+.errorlist
+{
+    color: red;
+}
+</style>
+
+<p>
+    <ul>
+    <li>
+        <a class="btn-large waves-effect waves-left" href="{% url 'password_change' %}">
+            <i class="material-icons right">lock</i>
+            לשינוי סיסמא
+        </a>
+    </li>
+    <br>
+
+    <h4>עריכת פרטים:</h4>
+        <form method="post">
+            {% csrf_token %}
+                {{student_form.as_ul}}
+            <br>
+                <li>
+                    <button class="btn waves-effect waves-left" type="submit" value="save">
+                        שמור
+                    <i class="material-icons left">save</i>
+                    </button>
+                </li>
+        </form>
+        <li>
+            {{message}}
+        </li>
+    </ul>
+</p>
+
+{% endblock %}

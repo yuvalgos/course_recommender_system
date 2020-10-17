@@ -74,7 +74,11 @@ class StudentRegForm(ModelForm):
         }
 
 
-class EditCourseRatingForm(ModelForm):
+class StudentEditForm(StudentRegForm):
+    pass
+
+
+class CourseRatingForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -98,3 +102,4 @@ class EditCourseRatingForm(ModelForm):
             'workload': 'רמת עומס',
             'final_grade': 'ציון סופי (לא חובה)',
         }
+

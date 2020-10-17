@@ -81,19 +81,20 @@ def register(request):
             user.student.save()
             sendConfirm(user) # sets EMAIL_ACTIVE_FIELD to false and sends confirmation email
             # login(request, user)
-            return redirect(reverse("home"))
+            return redirect(reverse("verification_email_sent"))
         else:
             # one of the forms is not valid:
-            print(user_form.errors)
-            print(student_form.errors)
             error_list = str(user_form.errors) + str(student_form.errors)
-            print(student_form.errors)
             return render(
                 request, "registration/register.html",
                 {"user_form": user_form,
                  'student_form': student_form,
                  'error_list': error_list}
             )
+
+
+def verification_email_sent(request):
+    return render(request, "registration/verification_email_sent.html")
 
 
 # show courses the courses rated by the user
@@ -175,7 +176,7 @@ def edit_course_rating(request, course_number):
         course_name_and_number = course.number_string + " " + course.name
         return render(
             request, "CRS/edit_course_rating.html",
-            {"form": EditCourseRatingForm(instance=course_rating),
+            {"form": CourseRatingForm(instance=course_rating),
              "course_name_and_number": course_name_and_number, }
         )
 
@@ -184,7 +185,7 @@ def edit_course_rating(request, course_number):
         old_diff = course_rating.difficulty
         old_wl = course_rating.workload
         print(old_diff)
-        form = EditCourseRatingForm(request.POST, instance=course_rating)
+        form = CourseRatingForm(request.POST, instance=course_rating)
         form.save()
         new_diff = course_rating.difficulty
         new_wl = course_rating.workload
@@ -237,6 +238,40 @@ def course_view(request, course_number):
         request, "CRS/course.html",
         {"course": course, }
     )
+
+
+@login_required
+def edit_profile(request):
+    current_student = request.user.student
+    if request.method == "GET":
+        student_form = StudentEditForm(instance=current_student)
+        return render(
+            request, "CRS/edit_profile.html",
+            {"student_form": student_form, }
+        )
+    elif request.method == "POST":
+        student_form = StudentEditForm(request.POST)
+        if student_form.is_valid():
+            current_student.credit_points = \
+                student_form.cleaned_data["credit_points"]
+            current_student.semester = student_form.cleaned_data["semester"]
+            current_student.degree_path = student_form.cleaned_data["degree_path"]
+            current_student.faculty = student_form.data.get("faculty")
+            # not using cleaned_data because clean data returns faculty model and
+            # student.faculty is saved as charfield
+            current_student.save()
+            message = "נשמר בהצלחה"
+            return render(
+                request, "CRS/edit_profile.html",
+                {"student_form": student_form,
+                 "message": message,
+                 }
+            )
+        else:
+            return render(
+                request, "CRS/edit_profile.html",
+                {"student_form": student_form, }
+            )
 
 
 # ---------------------management:----------------------

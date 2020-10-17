@@ -1,9 +1,3 @@
-* change name to without system in heroku
-* change password in settings.py to envuirment variable
-    and set variable in heroku
-
-* "verification email sent" page
-
 * edit all forms :
     -change label in forms to hebrew
     -edit the form (default values, etc...)
@@ -12,7 +6,7 @@
 
 * contact us page, using email
 
-* edit profile page
+* explanation pages and homepage
 
 * fix domain in settings when domain is known
 

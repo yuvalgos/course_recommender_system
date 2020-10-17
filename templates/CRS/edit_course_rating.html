@@ -9,15 +9,39 @@
 
 <form method="post">
     {% csrf_token %}
-     ניתן לבחור כל מספר בין 1 ל10, כולל נקודה עשרונית.
-    <p class="range-field" dir="ltr" style=>
         <ul>
-        {{ form.as_ul }}
+            <li>
+                {{ form.difficulty.label}}
+                <p class="range-field" dir="ltr">
+                {{ form.difficulty}}
+                </p>
+                <br>
+            </li>
+
+            <li>
+                {{ form.workload.label}}
+                <p class="range-field" dir="ltr">
+                {{ form.workload}}
+                </p>
+                <br>
+            </li>
+
+            <li>
+                {{ form.final_grade.label}}
+                <p dir="ltr">
+                {{ form.final_grade}}
+                </p>
+            </li>
+
+
+        <li>
+            <button class="btn waves-effect waves-left" type="submit" name="action">שמור
+            <i class="material-icons left">save</i></button>
+        </li>
         </ul>
     </p>
 
-    <button class="btn waves-effect waves-left" type="submit" name="action">שמור
-    <i class="material-icons left">save</i></button>
+
 </form>
 
 {% endblock %}

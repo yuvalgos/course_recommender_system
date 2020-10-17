@@ -7,7 +7,46 @@
 
 {% block content %}
 
+<form method="post">
+    {% csrf_token %}
+        <ul>
+            <li>
+                {{ form.difficulty.label}}
+                <p class="range-field" dir="ltr">
+                {{ form.difficulty}}
+                </p>
+                <br>
+            </li>
 
+            <li>
+                {{ form.workload.label}}
+                <p class="range-field" dir="ltr">
+                {{ form.workload}}
+                </p>
+                <br>
+            </li>
+
+            <li>
+                {{ form.final_grade.label}}
+                <p dir="ltr">
+                {{ form.final_grade}}
+                </p>
+            </li>
+
+
+        <li>
+            <button class="btn waves-effect waves-left" type="submit" name="action">הוסף
+            <i class="material-icons left">library_add</i></button>
+        </li>
+        </ul>
+    </p>
+
+
+</form>
+
+
+
+<!--old
     <form name="myform" method="post" >
         {% csrf_token %}
         <ul>
@@ -60,4 +99,5 @@
         form.grade.disabled = true;
     }
 </script>
+-->
 {% endblock content %}

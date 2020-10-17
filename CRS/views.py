@@ -134,35 +134,36 @@ def add_course_rating(request, course_number):
         return render(
             request, "CRS/add_course_rating.html",
             {"course_name_and_number": course_name_and_number,
-             "course_number": course_number}
+             "course_number": course_number,
+             "form": CourseRatingForm,
+             }
         )
-
     elif request.method == "POST":
         # todo: add data validation
-        course_rating = CourseRating(user=request.user,
-                                     course=course,
-                                     difficulty=request.POST.get('difficulty'),
-                                     workload=request.POST.get('workload'))
-        if request.POST.get('grade_radio_button') == "show_grade":
-            course_rating.final_grade = request.POST.get('grade')
-        course_rating.save()
+        course_rating_form = CourseRatingForm(request.POST)
+        if course_rating_form.is_valid():
+            # update course average rating:
+            if course.average_difficulty is None or course.average_workload is None:
+                # this is the first rating therefore it is the average
+                course.average_difficulty = course_rating_form.cleaned_data['difficulty']
+                course.average_workload = course_rating_form.cleaned_data['workload']
+            else:
+                # append new values to average by this formula
+                course.average_difficulty = \
+                    (float(course.average_difficulty) * float(course.ratings_count) +
+                     float(course_rating_form.cleaned_data['difficulty'])) / (float(course.ratings_count) + 1)
+                course.average_workload = \
+                    (float(course.average_workload) * float(course.ratings_count) +
+                     float(course_rating_form.cleaned_data['workload'])) / (float(course.ratings_count) + 1)
+            course.ratings_count = course.ratings_count + 1
 
-        # update course average rating:
-        if course.average_difficulty is None or course.average_workload is None:
-            # this is the first rating therefore it is the average
-            course.average_difficulty = course_rating.difficulty
-            course.average_workload = course_rating.workload
-        else:
-            # append new values to average by this formula
-            course.average_difficulty =\
-                (float(course.average_difficulty) * float(course.ratings_count) +
-                 float(course_rating.difficulty)) / (float(course.ratings_count) + 1)
-            course.average_workload = \
-                (float(course.average_workload) * float(course.ratings_count) +
-                 float(course_rating.workload)) / (float(course.ratings_count) + 1)
-        course.ratings_count = course.ratings_count + 1
-        course.save()
+            course.save()
+            course_rating_form.save(commit=False)
+            course_rating_form.instance.course_id = course_number
+            course_rating_form.instance.user = request.user
+            course_rating_form.save()
 
+        # if form is not valid, user is still redirected to my_courses, but it shouldn't happen
         return redirect(reverse("my_courses"))
 
 

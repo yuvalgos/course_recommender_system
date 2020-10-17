@@ -43,7 +43,8 @@ class CustomUserCreationForm(UserCreationForm):
 class StudentRegForm(ModelForm):
     faculty = forms.ModelChoiceField(
         queryset=Faculty.objects.all().order_by('faculty'),
-        label='פקולטה'
+        label='פקולטה',
+        empty_label='-בחר פקולטה-',
     )
 
     def clean_credit_points(self):
@@ -79,20 +80,6 @@ class StudentEditForm(StudentRegForm):
 
 
 class CourseRatingForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.fields['difficulty'].widget.attrs.update(
-            {'type': 'range', 'min': '1',
-             'max': '10', 'value': '5', 'style': 'width:60'})
-
-        self.fields['workload'].widget.attrs.update(
-            {'type': 'range', 'min': '1',
-             'max': '10', 'value': '5', 'style': 'width:60'})
-
-        self.fields['final_grade'].widget.attrs.update(
-            {'type': 'range', 'min': '0',
-             'max': '100', 'step': '1', 'style': 'width:60'})
 
     class Meta:
         model = CourseRating
@@ -100,6 +87,19 @@ class CourseRatingForm(ModelForm):
         labels = {
             'difficulty': 'רמת קושי',
             'workload': 'רמת עומס',
-            'final_grade': 'ציון סופי (לא חובה)',
+            'final_grade': 'ציון סופי (לא חובה, הזינו או השאירו ריק)',
         }
-
+        widgets = {
+            'difficulty': forms.NumberInput(
+                attrs={'type': 'range', 'min': '1', 'step': '0.5',
+                       'max': '10', 'value': '5', 'style': 'border-style: none;'}
+            ),
+            'workload': forms.NumberInput(
+                attrs={'type': 'range', 'min': '1', 'step': '0.5',
+                       'max': '10', 'value': '5', 'style': 'border-style: none;'}
+            ),
+            'final_grade': forms.NumberInput(
+                attrs={'type': 'Number', 'min': '0',
+                       'max': '100', 'step': '1', 'style': 'width:60'}
+            ),
+        }

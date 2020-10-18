@@ -14,9 +14,18 @@ from .add_courses_to_db import AddCoursesToDB, ClearCoursesDB
 
 BASE_UG_COURSE_URL = 'https://ug3.technion.ac.il/rishum/course/'
 
+
 # Create your views here.
 def home(request):
-    return render(request, template_name='base.html')
+    return render(request, template_name='CRS/index.html')
+
+
+def instructions(request):
+    return render(request, template_name='CRS/instructions.html')
+
+
+def faq(request):
+    return render(request, template_name='CRS/faq.html')
 
 
 def new_search(request):

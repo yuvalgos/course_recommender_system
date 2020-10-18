@@ -31,18 +31,10 @@
             <li>
                 <a href="{% url 'my_courses' %}">הקורסים שלי</a>
             </li>
-            <li>
-                <a href="{% url 'logout' %}">התנתק</a>
-            </li>
             {% else %}
-            <li>
-                <a href="{% url 'login' %}">התחבר</a>
-            </li>
-            <li>
-                <a href="{% url 'register' %}">הרשם</a>
-            </li>
-
             {% endif %}
+            <li><a href="{% url 'faq' %}">שאלות נפוצות</a></li>
+            <li><a href="{% url 'instructions' %}">הוראות</a></li>
             <li><a href="/">ראשי</a></li>
         </ul>
     </div>
@@ -54,17 +46,17 @@
             {% csrf_token %}
                 <ul>
                     <li style="width:10%">
-                        <button class="btn waves-effect waves-left" name="action" type="submit">חפש
-
+                        <button class="btn waves-effect waves-left" name="action" type="submit">
+                            <!--<i class="Tiny material-icons left">search</i>-->
+                            חפש
                         </button>
                     </li>
 
-                    <li style="width:80%">
+                    <li style="width:79%">
                         <input type="text" name="search" placeholder="הכנס שם או מספר קורס">
                     </li>
                     <listyle="width:10%">
                         חפש קורס:
-                        &nbsp
                     </li>
 
                 </ul>
@@ -76,7 +68,11 @@
     <b>
         {{ user.username|default:'אורח'}}
         {% if user.is_authenticated %}
-            <a href="{% url 'edit_profile' %}">(עריכת פרופיל)</a>
+            <a href="{% url 'edit_profile' %}">(עריכת פרופיל) </a>
+            <a href="{% url 'logout' %}">(התנתק)</a>
+        {% else %}
+            <a href="{% url 'login' %}">(התחבר) </a>
+            <a href="{% url 'register' %}">(הירשם)</a>
         {% endif %}
     </b>
 </div>

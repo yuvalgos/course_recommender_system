@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    <h4 style="text-align: center"> {{ search_message| title }} </h4>
+{% block title %}
+ברוכים הבאים
+{% endblock title %}
 
-    {% for course in search_results %}
-        <div class="card">
-            <div class="card-content">
-                <h5>{{course.name}} , {{course.number_string}}</h5>
-                {{course.info}}
-            </div>
-            <div class="card-action">
-                <a href="/">לעמוד הקורס</a>
-            </div>
-        </div>
-    {% endfor %}
+{% block content %}
+{% if request.user.is_authenticated %}
+ברוכים הבאים
+
+{% else %}
+    <p>
+        מומלץ
+        <a href="{% url 'register' %}">להירשם</a>
+        לפני שאתם מתחילים להשתמש באתר.
+        <br>
+        לאחר מכן, כדאי לקרוא על איך זה עובד ואיך לדרג נכון קורסים כאן. ולעבור על השאלות הנפוצות השאלות הנפוצות.
+    </p>
+
+
+{% endif %}
 {% endblock content %}

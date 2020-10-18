@@ -24,7 +24,7 @@
 
 <nav class="cyan darken-2">
     <div class="container nav-wrapper" dir="ltr">
-        <a href="/" class="brand-logo left">Technion Course Recommender</a>
+        <a href="/" class="brand-logo left" style="font-size: 170%;">Technion Course Recommender</a>
         <ul id="nav-mobile" class="right">
 
             {% if user.is_authenticated %}
@@ -45,14 +45,14 @@
         <form class="container" action="{% url 'new_search' %}" method="post">
             {% csrf_token %}
                 <ul>
-                    <li style="width:10%">
+                    <li style="width:20%">
                         <button class="btn waves-effect waves-left" name="action" type="submit">
                             <!--<i class="Tiny material-icons left">search</i>-->
                             חפש
                         </button>
                     </li>
 
-                    <li style="width:79%">
+                    <li style="width:69%">
                         <input type="text" name="search" placeholder="הכנס שם או מספר קורס">
                     </li>
                     <listyle="width:10%">

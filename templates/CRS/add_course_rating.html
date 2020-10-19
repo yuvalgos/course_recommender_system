@@ -6,6 +6,20 @@
 {% endblock title %}
 
 {% block content %}
+תזכורת
+<a href="{% url 'instructions' %}">איך לדרג נכון:</a>
+ <div class="collection-item">
+     <i class="material-icons secondary-content Tiny">priority_high</i>
+     להשתמש בכל הסקאלה
+ </div>
+ <div class="collection-item">
+     <i class="material-icons secondary-content Tiny">priority_high</i>
+     עומס יחסי לנק"ז
+ </div>
+ <div class="collection-item">
+     <i class="material-icons secondary-content Tiny">priority_high</i>
+     דירוג אובייקטיבי, רק לקורסים שסיימתם
+ </div>
 
 <form method="post">
     {% csrf_token %}

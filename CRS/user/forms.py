@@ -103,3 +103,14 @@ class CourseRatingForm(ModelForm):
                        'max': '100', 'step': '1', 'style': 'width:60'}
             ),
         }
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=100, label='שם')
+    email = forms.EmailField(label='מייל לחזרה')
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 30,
+                                                           'cols': 30,
+                                                           'style': 'height: 30%'}),
+                              label='הודעה')
+
+

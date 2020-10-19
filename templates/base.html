@@ -24,17 +24,14 @@
 
 <nav class="cyan darken-2">
     <div class="container nav-wrapper" dir="ltr">
-        <a href="/" class="brand-logo left" style="font-size: 170%;">Technion Course Recommender</a>
+        <a href="/" class="brand-logo left" style="font-size: 150%;">Technion Course Recommender</a>
         <ul id="nav-mobile" class="right">
-
-            {% if user.is_authenticated %}
-            <li>
-                <a href="{% url 'my_courses' %}">הקורסים שלי</a>
-            </li>
-            {% else %}
-            {% endif %}
+            <li><a href="{% url 'contact_us' %}">יצירת קשר</a></li>
             <li><a href="{% url 'faq' %}">שאלות נפוצות</a></li>
             <li><a href="{% url 'instructions' %}">הוראות</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'my_courses' %}">הקורסים שלי</a></li>
+            {% endif %}
             <li><a href="/">ראשי</a></li>
         </ul>
     </div>

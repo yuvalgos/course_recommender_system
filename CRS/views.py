@@ -2,6 +2,7 @@ import requests
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -26,6 +27,29 @@ def instructions(request):
 
 def faq(request):
     return render(request, template_name='CRS/faq.html')
+
+
+def contact_us(request):
+    msg = ""
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            sender_name = form.cleaned_data['name']
+            sender_email = form.cleaned_data['email']
+
+            email_content = "קיבלת מייל מ:" + sender_name + "\n" + \
+                "שם משתמש:" + request.user.username + "\n" + \
+                "מייל:" + sender_email + "\n\n" + \
+                form.cleaned_data["message"]
+
+            send_mail("מייל דרך צור קשר", email_content, sender_email,
+                      ['TCourseRecommender@gmail.com'])
+
+            msg = "ההודעה התקבלה, תודה!"
+        else:
+            msg = "תקלה, נסה שנית או שלח מייל"
+
+    return render(request, 'CRS/contact_us.html', {'form': ContactForm(), 'msg': msg})
 
 
 def new_search(request):

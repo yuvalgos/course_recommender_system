@@ -21,6 +21,7 @@ urlpatterns = [
     path('email/', include(mail_urls)),
     path('instructions', views.instructions, name='instructions'),
     path('faq', views.faq, name='faq'),
+    path('contact_us', views.contact_us, name='contact_us'),
 
     path('management', views.management, name='management'),
     path('add_courses', views.add_courses, name='add_courses'),

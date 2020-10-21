@@ -1,10 +1,6 @@
 * explanation pages and homepage
 
-* site symbol
-
-* use heroku free student perks, buy domain and db app
-
-* fix domain in settings when domain is known
+* delete link to course page
 
 * use non - debug
 _______________________________________________________________
@@ -27,5 +23,8 @@ long term:
 * implement online learning algorithem instead of using surprise library
 
 ############################################################################
-a query to get student data efficently :
- users = User.objects.all().select_related('profile')
+
+
+db - 9$ /m
+domain - 1$/year
+dyno (if needed) - 25$ /m

@@ -1,6 +1,5 @@
 * delete link to course page
 
-* use non - debug
 _______________________________________________________________
 * add estimation logic, if it takes time use loadbars
 

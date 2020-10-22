@@ -22,7 +22,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')  # copy pasted
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6wwax#u3s2zd^$#nts)*&)18+m1%&n&ts2m(yw(z##vu$n$h0r'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -120,14 +120,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 # Extra lookup directories for collectstatic to find static files
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),
+                    os.path.join(BASE_DIR, 'CRS/static')
+                    ]
+
 
 #  Add configuration for static files storage using whitenoise
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
@@ -147,7 +148,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'TCourseRecommender@gmail.com'
-EMAIL_HOST_PASSWORD = 'oshsbrmmtqabevgf'
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
 
 
 EMAIL_ACTIVE_FIELD = 'is_active'
@@ -161,3 +162,12 @@ EMAIL_MAIL_SUBJECT = 'Technion Course Recommender אשר את המשתמש'
 EMAIL_MAIL_PLAIN = 'registration/verification_email.txt'
 EMAIL_PAGE_TEMPLATE = 'registration/confirm_template.html'
 EMAIL_PAGE_DOMAIN = 'TCourseRecommender.xyz/'
+
+# when uncommented errors sent in mail:
+# ADMINS = (
+#     ('yuval', 'tcourserecommender@gmail.com'),
+# )
+#
+# MANAGERS = (
+#     ('yuval', 'tcourserecommender@gmail.com'),
+# )

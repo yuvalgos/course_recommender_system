@@ -25,9 +25,11 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')  # copy pasted
 SECRET_KEY = '6wwax#u3s2zd^$#nts)*&)18+m1%&n&ts2m(yw(z##vu$n$h0r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['courserecommendersystem.herokuapp.com']
+ALLOWED_HOSTS = ['courserecommendersystem.herokuapp.com',
+                 'localhost',
+                 '127.0.0.1']
 
 # Application definition
 

@@ -1,5 +1,3 @@
-* explanation pages and homepage
-
 * delete link to course page
 
 * use non - debug

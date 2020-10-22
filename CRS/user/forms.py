@@ -35,7 +35,11 @@ class CustomUserCreationForm(UserCreationForm):
             'password2': 'אימות סיסמא',
         }
         help_texts = {
-            'username': '<br><br>',
+            'username': ' רק אותיות באנגלית והסימנים '
+                        '@/./+/-/_'
+                        '<br>'
+                        'מומלץ להשתמש ב-FirstName_LastName. כן, מותר לכתוב פה מייל והוא ישמש כשם משתמש.'
+                        '<br><br>',
             'email': ' חובה להשתמש במייל טכניוני לאימות<br><br>',
         }
 

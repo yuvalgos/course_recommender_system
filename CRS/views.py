@@ -313,6 +313,6 @@ def add_courses(request):
 # used to add new courses to database from json files
 @staff_member_required
 def add_extra_courses(request):
-    AddExtraCourses("CRS/courses_from_cheesefork.JSON")
-    AddExtraCourses("CRS/courses_from_cheesefork2.JSON")
+    AddExtraCourses("CRS/courses_from_cheesefork.json")
+    AddExtraCourses("CRS/courses_from_cheesefork2.json")
     return redirect('management')

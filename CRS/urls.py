@@ -25,4 +25,5 @@ urlpatterns = [
 
     path('management', views.management, name='management'),
     path('add_courses', views.add_courses, name='add_courses'),
+    path('add_extra_courses', views.add_extra_courses, name='add_extra_courses'),
 ]

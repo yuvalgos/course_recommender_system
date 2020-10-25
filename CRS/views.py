@@ -11,7 +11,7 @@ from django_email_verification import sendConfirm
 from . import models
 from .user.forms import *
 
-from .add_courses_to_db import AddCoursesToDB, ClearCoursesDB
+from .add_courses_to_db import AddCoursesToDB, ClearCoursesDB, AddExtraCourses
 
 BASE_UG_COURSE_URL = 'https://ug3.technion.ac.il/rishum/course/'
 
@@ -303,7 +303,16 @@ def management(request):
     return render(request, template_name='CRS/management.html')
 
 
+# adds courses to database, should not be used
 @staff_member_required
 def add_courses(request):
     AddCoursesToDB()
+    return redirect('management')
+
+
+# used to add new courses to database from json files
+@staff_member_required
+def add_extra_courses(request):
+    AddExtraCourses("CRS/courses_from_cheesefork.JSON")
+    AddExtraCourses("CRS/courses_from_cheesefork2.JSON")
     return redirect('management')

@@ -163,11 +163,11 @@ EMAIL_MAIL_PLAIN = 'registration/verification_email.txt'
 EMAIL_PAGE_TEMPLATE = 'registration/confirm_template.html'
 EMAIL_PAGE_DOMAIN = 'TCourseRecommender.xyz/'
 
-# when uncommented errors sent in mail:
-# ADMINS = (
-#     ('yuval', 'tcourserecommender@gmail.com'),
-# )
-#
-# MANAGERS = (
-#     ('yuval', 'tcourserecommender@gmail.com'),
-# )
+when uncommented errors sent in mail:
+ADMINS = (
+    ('yuval', 'tcourserecommender@gmail.com'),
+)
+
+MANAGERS = (
+    ('yuval', 'tcourserecommender@gmail.com'),
+)

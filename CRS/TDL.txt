@@ -1,11 +1,18 @@
-* delete link to course page
+before working version:
 
-_______________________________________________________________
+* add "data download to file" button
+
+* make script to output basic data info
+
 * add estimation logic, if it takes time use loadbars
 
-* improve look - corses cards and so..
-
 * update course page, some comments inside course view function
+
+* add stats page
+________________________________________________________
+* add footer
+
+* improve look - corses cards and so..
 
 * add basic documentation and order in main code files
 
@@ -15,7 +22,6 @@ improvements:
 * student average grade calculations
 * add semester taken to course rating (dropdown list)
 * my courses page layout, order by semester taken
-* check about social loging (use facebook and etc...) really not a must
 
 long term:
 * refactor all code and add documentation if needed
@@ -23,7 +29,5 @@ long term:
 
 ############################################################################
 
-
 db - 9$ /m
 domain - 1$/year
-dyno (if needed) - 25$ /m

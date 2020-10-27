@@ -4,13 +4,20 @@
 <h3>לא לעשות כלום לפני שקואים את התעוד של הפונקציות</h3>
 <br><br>
 <center>
+    <a href="{% url 'download_ratings' %}">
+        <button  class="btn waves-effect waves-left" type="submit" name="action">
+            הורדת הדירוגים
+        </button>
+    </a>
+    <br>
+
     <a href="{% url 'add_extra_courses' %}">
         <button  class="btn waves-effect waves-left" type="submit" name="action">
            עדכן קורסים
             (לעדכן שמות קבצים בקוד לפני זה)
         </button>
     </a>
-
+    <br>
     <form action="{% url 'add_courses' %}" method="post">
         {% csrf_token %}
         <button class="btn waves-effect waves-left" type="submit" name="action">

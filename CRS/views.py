@@ -4,9 +4,12 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django_email_verification import sendConfirm
+from django_pandas.io import read_frame
+from datetime import datetime
 
 from . import models
 from .user.forms import *
@@ -316,3 +319,17 @@ def add_extra_courses(request):
     AddExtraCourses("CRS/courses_from_cheesefork.json")
     AddExtraCourses("CRS/courses_from_cheesefork2.json")
     return redirect('management')
+
+
+@staff_member_required
+def download_ratings(request):
+    course_rating_qs = CourseRating.objects.all()
+    course_rating_df = read_frame(course_rating_qs, verbose=False)
+    course_rating_df.to_csv("ratings_downloadable.csv", index = False)
+
+    response = HttpResponse(open("ratings_downloadable.csv", 'rb').read())
+    response['Content-Type'] = 'text/plain'
+    response['Content-Disposition'] =\
+        'attachment; filename=ratings.csv'
+    return response
+

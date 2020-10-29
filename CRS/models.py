@@ -15,6 +15,7 @@ class Student(models.Model):
     faculty = models.CharField(max_length=100, null=True, blank=True)
     degree_path = models.CharField(max_length=100, null=True, blank=True)
     average_grade = models.FloatField(default=None, null=True, blank=True)
+    want_emails = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username

@@ -1,9 +1,10 @@
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelForm, ValidationError
+from django.forms import ModelForm, ValidationError, Select
 from ..models import Student, CourseRating, Faculty
 from ..widgets import RangeInput
 from django import forms
+from .widgets import CustomRadioSelect
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -67,16 +68,24 @@ class StudentRegForm(ModelForm):
 
     class Meta:
         model = Student
-        fields = ('faculty', 'degree_path', 'credit_points', 'semester')
+        fields = ('faculty', 'degree_path', 'credit_points', 'semester', 'want_emails')
         labels = {
             'faculty': 'שם משתמש',
             'degree_path': 'מסלול (לא חובה)',
             'credit_points': 'נקודות זכות שצברת (לא חובה)',
-            'semester': 'סמסטר (לא חובה) :',
+            'semester': 'סמסטר (לא חובה)',
+            'want_emails': 'קבלת מייל על עדכונים ושינויים'
         }
         help_texts = {
-            'semester': 'כמה סמסטרים עברת מתחילת התואר, לא כולל הנוכחי',
+            'semester': 'כמה סמסטרים עברת מתחילת התואר, לא כולל הנוכחי'
+                        '<br><br>',
+            'want_emails': 'לא נשלח פרסומות או כמות מוגזמת של מיילים, רק עדכונים חשובים לעיתים רחוקות'
         }
+        widgets = {'want_emails': Select(choices=[(True, '      אין בעיה'),
+                                                  (False, '     עזבו אותי בשקט! לא רוצה לשמוע מכם יותר')],
+                                         ),
+                   'faculty': Select(attrs={"text-align-last": "center"})
+                   }
 
 
 class StudentEditForm(StudentRegForm):
@@ -84,7 +93,6 @@ class StudentEditForm(StudentRegForm):
 
 
 class CourseRatingForm(ModelForm):
-
     class Meta:
         model = CourseRating
         fields = ('difficulty', 'workload', 'final_grade')
@@ -116,5 +124,3 @@ class ContactForm(forms.Form):
                                                            'cols': 30,
                                                            'style': 'height: 30%'}),
                               label='הודעה')
-
-

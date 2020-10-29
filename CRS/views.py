@@ -103,6 +103,7 @@ def register(request):
             user.student.degree_path = student_form.cleaned_data["degree_path"]
             user.student.faculty = student_form.data.get("faculty")
             # not using cleaned_data because clean data returns faculty model and student.faculty is saved as charfield
+            user.student.want_emails = student_form.cleaned_data["want_emails"]
 
             user.student.save()
             sendConfirm(user) # sets EMAIL_ACTIVE_FIELD to false and sends confirmation email
@@ -285,6 +286,8 @@ def edit_profile(request):
             current_student.faculty = student_form.data.get("faculty")
             # not using cleaned_data because clean data returns faculty model and
             # student.faculty is saved as charfield
+            current_student.want_emails = student_form.cleaned_data["want_emails"]
+
             current_student.save()
             message = "נשמר בהצלחה"
             return render(

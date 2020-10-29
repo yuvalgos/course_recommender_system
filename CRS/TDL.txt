@@ -1,15 +1,18 @@
 before working version:
 
-* add "data download to file" button
-
-* make script to output basic data info
+* finish analyzing data with more algos and exclude users with less then 8
+    ratings
 
 * add estimation logic, if it takes time use loadbars
 
 * update course page, some comments inside course view function
 
-* add stats page
+* send mail to users about perks
 ________________________________________________________
+* add stats page
+
+*improve faq look
+
 * add footer
 
 * improve look - corses cards and so..

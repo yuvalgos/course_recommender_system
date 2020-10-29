@@ -2,8 +2,7 @@ import pandas as pd
 from surprise import Dataset
 from surprise import Reader
 from surprise.model_selection import GridSearchCV
-from surprise import KNNWithMeans
-
+from surprise import KNNWithMeans, KNNBasic
 
 NORMALIZE = True
 
@@ -21,7 +20,7 @@ def print_stats(ratings_df):
     print(ratings_df['course'].value_counts().head(10))
 
 
-def train_model(ratings_df):
+def cv_KNNWithMeans(ratings_df):
     reader = Reader(rating_scale=(1, 10))
 
     difficulty_df = ratings_df[['user', 'course', 'difficulty']]
@@ -34,8 +33,7 @@ def train_model(ratings_df):
         "user_based": [False, True],
         "min support": [1, 2, 3, 4, 5],
     }
-
-    param_grid = {"sim_options": sim_options}
+    param_grid = {"sim_options": sim_options, }
 
     gs = GridSearchCV(KNNWithMeans, param_grid, measures=["rmse", "mae"], cv=3)
     gs.fit(data)
@@ -47,13 +45,43 @@ def train_model(ratings_df):
     print("---best rmse params: ", gs.best_params["rmse"])
     print("---best rmse index: ", gs.best_index["rmse"])
 
+
+def cv_KNNBasic(ratings_df):
+    reader = Reader(rating_scale=(1, 10))
+
+    difficulty_df = ratings_df[['user', 'course', 'difficulty']]
+
+    data = Dataset.load_from_df(difficulty_df,
+                                reader)
+
+    sim_options = {
+        "name": ["msd", "cosine"],
+        "user_based": [False, True],
+        "min support": [1, 2, 3, 4, 5],  # min number of common items between user for similarity not to be 0
+        "min_k": [1, 2, 3, 4, 5]  # minimum neighbors to calculate
+    }
+    param_grid = {"sim_options": sim_options}
+
+    gs = GridSearchCV(KNNBasic, param_grid, measures=["rmse", "mae"], cv=3)
+    gs.fit(data)
+    print("---best mae score: ", gs.best_score["mae"])
+    print("---best mae params: ", gs.best_params["mae"])
+    print("---best mae index: ", gs.best_index["mae"])
+    print("--------------------------------------------")
+    print("---best rmse score: ", gs.best_score["rmse"])
+    print("---best rmse params: ", gs.best_params["rmse"])
+    print("---best rmse index: ", gs.best_index["rmse"])
+
+
 def main():
     ratings_df = pd.read_csv("offline_dev/ratings.csv",
                              index_col="id")
 
     print_stats(ratings_df)
 
-    train_model(ratings_df)
+    cv_KNNBasic(ratings_df)
+
+    # cv_KNNWithMeans(ratings_df)
 
 
 if __name__ == "__main__":

@@ -191,8 +191,8 @@ def add_course_rating(request, course_number):
             course_rating_form.instance.user = request.user
             course_rating_form.save()
 
-            if len(CourseRating.objects.all()) % RATINGS_PER_UPDATE == 0:
-                train_recommender()
+            # if len(CourseRating.objects.all()) % RATINGS_PER_UPDATE == 0:
+            #     train_recommender()
 
         # if form is not valid, user is still redirected to my_courses, but it shouldn't happen
         return redirect(reverse("my_courses"))

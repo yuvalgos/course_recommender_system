@@ -17,7 +17,8 @@ from .user.forms import *
 from .add_courses_to_db import AddCoursesToDB, ClearCoursesDB, AddExtraCourses
 
 BASE_UG_COURSE_URL = 'https://ug3.technion.ac.il/rishum/course/'
-
+RATINGS_PER_UPDATE = 3
+# train the recommender model each RAITNGS_PER_UPDATE ratings added
 
 # Create your views here.
 def home(request):

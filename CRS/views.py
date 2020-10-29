@@ -10,6 +10,7 @@ from django.urls import reverse
 from django_email_verification import sendConfirm
 from django_pandas.io import read_frame
 from datetime import datetime
+from .recommender import train_recommender, get_recommendation
 
 from . import models
 from .user.forms import *
@@ -190,6 +191,13 @@ def add_course_rating(request, course_number):
             course_rating_form.instance.user = request.user
             course_rating_form.save()
 
+            if len(CourseRating.objects.all()) % RATINGS_PER_UPDATE == 0:
+                train_recommender()
+
+            import threading
+            t = threading.Thread(target=background_process, args=(), kwargs={})
+            t.setDaemon(True)
+            t.start()
         # if form is not valid, user is still redirected to my_courses, but it shouldn't happen
         return redirect(reverse("my_courses"))
 
@@ -232,7 +240,6 @@ def edit_course_rating(request, course_number):
 
 @login_required
 def delete_course_rating(request, course_number):
-    print("-----------------------------------------------------here")
     course = get_object_or_404(models.Course, pk=course_number)
     course_rating = get_object_or_404(CourseRating,
                                       course=course,

@@ -4,19 +4,22 @@ from surprise import Reader
 from surprise import Dataset
 from surprise import KNNBasic
 from surprise import dump
+import time
 
 
 # trains two models and dumps the surprise algorithem objects to a file named
 # "RecommenderDumpDiff" (for difficulty) "RecommenderDumpWL" (for workload)
 def train_recommender():
+    start_time = time.time()
+
     course_rating_qs = CourseRating.objects.all()
     course_rating_df = read_frame(course_rating_qs, verbose=False)
 
     # surprise library gets dataframe in this order: (user,course,rating)
-    fields_workload = ["user", "course", "difficulty"]
-    df_difficulty = course_rating_df.loc[:, fields]
+    fields_difficulty = ["user", "course", "difficulty"]
+    df_difficulty = course_rating_df.loc[:, fields_difficulty]
     fields_workload = ["user", "course", "workload"]
-    df_workload = course_rating_df.loc[:, fields]
+    df_workload = course_rating_df.loc[:, fields_workload]
 
     reader = Reader(rating_scale=(1, 10))
     data_difficulty = Dataset.load_from_df(df_difficulty, reader)
@@ -33,6 +36,10 @@ def train_recommender():
 
     dump.dump("RecommenderDumpDiff", algo=algorithm_difficulty)
     dump.dump("RecommenderDumpWL", algo=algorithm_workload)
+
+    f = open("recommender_log.txt", "a")
+    f.write(">>>> recommender trained in ", time.time() - start_time, "seocnds")
+    f.close()
 
 
 # return value: (difficulty, workload, was imposible?? (tbd) )

@@ -194,10 +194,6 @@ def add_course_rating(request, course_number):
             if len(CourseRating.objects.all()) % RATINGS_PER_UPDATE == 0:
                 train_recommender()
 
-            import threading
-            t = threading.Thread(target=background_process, args=(), kwargs={})
-            t.setDaemon(True)
-            t.start()
         # if form is not valid, user is still redirected to my_courses, but it shouldn't happen
         return redirect(reverse("my_courses"))
 

@@ -38,7 +38,8 @@ def train_recommender():
     dump.dump("RecommenderDumpWL", algo=algorithm_workload)
 
     f = open("recommender_log.txt", "a")
-    f.write(">>>> recommender trained in ", time.time() - start_time, "seocnds")
+    log = ">>>> recommender trained in " + time.time() - start_time + "seocnds"
+    f.write(log)
     f.close()
 
 

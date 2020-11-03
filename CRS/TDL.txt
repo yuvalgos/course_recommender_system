@@ -3,11 +3,12 @@ before working version:
 * finish analyzing data with more algos and exclude users with less then 8
     ratings
 
-* add estimation logic, if it takes time use loadbars
+* update course page:
+    -style
+    -give average when cant estimate
+    -additional data about estimation (how many neighbors)
 
 * create early access group
-
-* update course page, some comments inside course view function
 
 * send mail to users about perks
 

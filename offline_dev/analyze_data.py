@@ -4,7 +4,9 @@ from surprise import Reader
 from surprise.model_selection import GridSearchCV
 from surprise import KNNWithMeans, KNNBasic
 
-NORMALIZE = True
+
+PARAMS_TUNING_FILE_NAME = "offline_dev/params_tuning.txt"
+#NORMALIZE = True
 
 
 def print_stats(ratings_df):
@@ -40,20 +42,9 @@ def cv_KNNWithMeans(ratings_df):
     print("---best mae score: ", gs.best_score["mae"])
     print("---best mae params: ", gs.best_params["mae"])
     print("---best mae index: ", gs.best_index["mae"])
-    print("--------------------------------------------")
-    print("---best rmse score: ", gs.best_score["rmse"])
-    print("---best rmse params: ", gs.best_params["rmse"])
-    print("---best rmse index: ", gs.best_index["rmse"])
 
 
-def cv_KNNBasic(ratings_df):
-    reader = Reader(rating_scale=(1, 10))
-
-    difficulty_df = ratings_df[['user', 'course', 'difficulty']]
-
-    data = Dataset.load_from_df(difficulty_df,
-                                reader)
-
+def tune_KNNBasic(diff_data, wl_data, output_file):
     sim_options = {
         "name": ["msd", "cosine"],
         "user_based": [False, True],
@@ -63,26 +54,44 @@ def cv_KNNBasic(ratings_df):
     param_grid = {"sim_options": sim_options}
 
     gs = GridSearchCV(KNNBasic, param_grid, measures=["rmse", "mae"], cv=3)
-    gs.fit(data)
-    print("---best mae score: ", gs.best_score["mae"])
-    print("---best mae params: ", gs.best_params["mae"])
-    print("---best mae index: ", gs.best_index["mae"])
-    print("--------------------------------------------")
-    print("---best rmse score: ", gs.best_score["rmse"])
-    print("---best rmse params: ", gs.best_params["rmse"])
-    print("---best rmse index: ", gs.best_index["rmse"])
+
+    gs.fit(diff_data)
+
+    output_file.write("-------------------------------------------------\n")
+
+    output_file.write("KNNBasic:\n")
+    output_file.write("-------------------------------------------------\n")
+    output_file.write("difficulty:\n")
+    output_file.write("best score: ")
+    output_file.write(str(gs.best_score["mae"]) + "\n")
+    output_file.write("best params: ")
+    output_file.write(str(gs.best_params["mae"]) + "\n")
+    output_file.write("-------------------------------------------------\n\n")
+
+
+def tune_params(ratings_df):
+    reader = Reader(rating_scale=(1, 10))
+
+    difficulty_df = ratings_df.loc[:, ['user', 'course', 'difficulty']]
+    workload_df = ratings_df.loc[:, ['user', 'course', 'workload']]
+
+    diff_data = Dataset.load_from_df(difficulty_df, reader)
+    wl_data = Dataset.load_from_df(workload_df, reader)
+
+    output_file = open(PARAMS_TUNING_FILE_NAME, "w+")
+
+    tune_KNNBasic(diff_data, wl_data, output_file)
+
+
 
 
 def main():
     ratings_df = pd.read_csv("offline_dev/ratings.csv",
                              index_col="id")
 
-    print_stats(ratings_df)
+    print_stats(ratings_df) # not to file
 
-    cv_KNNBasic(ratings_df)
-
-    # cv_KNNWithMeans(ratings_df)
-
+    tune_params(ratings_df)
 
 if __name__ == "__main__":
     main()

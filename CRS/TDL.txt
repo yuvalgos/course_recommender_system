@@ -5,10 +5,16 @@ before working version:
 
 * add estimation logic, if it takes time use loadbars
 
+* create early access group
+
 * update course page, some comments inside course view function
 
 * send mail to users about perks
+
+* add faqs
 ________________________________________________________
+* migrate to bootstrap
+
 * add stats page
 
 *improve faq look

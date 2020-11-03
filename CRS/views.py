@@ -10,7 +10,7 @@ from django.urls import reverse
 from django_email_verification import sendConfirm
 from django_pandas.io import read_frame
 from datetime import datetime
-from .recommender import train_recommender, get_recommendation
+from .recommender import recommend
 
 from . import models
 from .user.forms import *
@@ -262,14 +262,45 @@ def delete_course_rating(request, course_number):
     return redirect(reverse("my_courses"))
 
 
-def course_view(request, course_number):
+def course_view(request, course_number, estimate=False):
     course = get_object_or_404(models.Course, pk=course_number)
-    # ug_urls = BASE_UG_COURSE_URL + course.number_string
-    return render(
-        request, "CRS/course.html",
-        {"course": course, }
-    )
+    ug_url = BASE_UG_COURSE_URL + course.number_string
 
+    if request.user.is_authenticated:
+        user_authenticated = True
+        user_ratings = models.CourseRating.objects.filter\
+            (user=request.user).order_by('-updated_at')
+
+        user_rated_course = None
+        for rating in user_ratings:
+            if rating.course.number == course_number:
+                user_rated_course = rating
+
+        user_estimable = len(user_ratings) > 8
+    else:
+        user_authenticated = False
+        user_rated_course = None
+        user_estimable = False
+
+    contex = {"course": course,
+              "ug_url": ug_url,
+              "user_authenticated": user_authenticated,
+              "user_estimable": user_estimable,
+              "user_rated_course": user_rated_course}
+
+
+    if not estimate:
+        contex["estimate"] = 0
+
+    elif estimate:
+        est_wload, est_diff, calc_time = recommend(user=request.user.id,
+                                                   course=course.number)
+        contex["estimate"] = 1
+        contex["est_wload"] = est_wload
+        contex["est_diff"] = est_diff
+        contex["calc_time"] = calc_time
+
+    return render(request, "CRS/course.html", contex)
 
 @login_required
 def edit_profile(request):

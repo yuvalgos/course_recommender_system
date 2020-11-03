@@ -88,3 +88,5 @@ class Faculty(models.Model):
 
     def __str__(self):
         return self.faculty
+
+

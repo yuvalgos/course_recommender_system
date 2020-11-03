@@ -5,35 +5,111 @@
 {% endblock title %}
 
 {% block content %}
-        <ul>
-            <li> <u>מידע:</u>
-                {{course.info}}
-                <br>
+<div class="container">
+    <table class="highlight" style="text-align:right;">
+        <tbody>
+            <tr>
+                <td style="text-align:right; width:20%" >מידע:</td>
+                <td style="text-align:right; width:80%">{{course.info}}</td>
+            </tr>
+            <tr>
+                <td style="text-align:right;">נקודות זכות:</td>
+                <td style="text-align:right;">{{course.credit_points}}</td>
+            </tr>
+            <tr>
+                <td style="text-align:right;">קישורים שימושיים:</td>
+                <td style="text-align:right;">
+                    <a target="_blank" rel="noopener noreferrer" href="{{ug_url}}">
+                        עמוד הקורס בUG
+                    </a>
+                </td>
+            </tr>
+            {% if not user_estimable %}
+            <tr><td></td></tr>
+            <tr>
+                <td style="text-align:right;">דירוג קושי ממוצע במערכת:</td>
+                <td style="text-align:right;">
+                    <b>
+                    {{course.average_difficulty | floatformat:2}}
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right;">דירוג עומס ממוצע במערכת:</td>
+                <td style="text-align:right;">
+                    <b>{{course.average_workload | floatformat:2}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    (לפי
+            {{course.ratings_count}}
+            דירוגים)
+                </td>
+            </tr>
+            {% endif %}
 
-            </li>
-            <li> <u>נקודות זכות:</u>
-                {{course.credit_points}}
-                <br>
+            {% if user_rated_course %}
+            <tr><td></td></tr>
+            <b>
+            <tr>
+                <td style="text-align:right;">דירוג רמת קושי:</td>
+                <td style="text-align:right;">
+                    <b>{{user_rated_course.difficulty}}</b>
+                    <p style="font-size:70%">(לפי הדירוג שלך)</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right;">דירוג רמת עומס:</td>
+                <td style="text-align:right;">
+                    <b>{{user_rated_course.workload}}</b>
+                    <p style="font-size:70%">(לפי הדירוג שלך)</p>
 
-            </li>
+                </td>
+              </tr>
+            </b>
+            {% endif %}
 
-            <li> <u>דירוג קושי ממוצע:</u>
-                {{course.average_difficulty}}
-                <br>
-            </li>
+        </tbody>
+    </table>
+</div>
 
-            <li> <u>דירוג עומס ממוצע:</u>
-                {{course.average_workload}}
-                <br>
+{% if user_authenticated and user_estimable and not user_rated_course %}
+    {% if not estimate %}
+        <a href="{% url 'course_estimate' course_number=course.number estimate=1 %}">
+            <button id="estimate" onclick="showLoadingBar()" class="btn waves-effect waves-left">
+                קבל שערוך
+                <i class="material-icons left">linear_scale</i>
+            </button>
+        </a>
 
-            </li>
+        <div id="LoadingBar" class="container" style="display:none;">
+            <h6>טוען...</h6>
+            <div class="progress">
+              <div class="indeterminate"></div>
+            </div>
+        </div>
+        <script>
+        function showLoadingBar() {
+          document.getElementById("estimate").disabled = true;
+          document.getElementById("LoadingBar").style.display = "block";
+        }
+        </script>
+    {% else %}
+        קושי משוערך:
+        {{est_diff | floatformat:2}}
+        <br>
+        עומס משוערך:
+        {{est_wload | floatformat:2}}
+        <br>
+        זמן חישוב:
+        {{calc_time}}
+    {% endif %}
 
-
-            <li> <u>מידע על הדירוג עםif </u>
-                {{course.credit_points}}
-            </li>
-
-        </ul>
-
+{% elif user_authenticated and not user_estimable %}
+    <h5>כדי לשערך רמת עומס/קושי של קורס עליך לדרג לפחות 8 קורסים. עם פחות מזה השערוך לא מספיק טוב. אם עוד לא עשית 8 קורסים הדירוג הממוצע הוא מדד דיי טוב בנתיים! </h5>
+{% elif not user_authenticated %}
+    <h5>כדי לשערך רמת עומס/קושי של קורס עליך להתחבר או להרשם ולדרג קורסים. בנתיים מוצג רק דירוג ממוצע במערכת.</h5>
+{% endif %}
 
 {% endblock content %}

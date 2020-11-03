@@ -18,6 +18,7 @@ urlpatterns = [
          name='edit_course_rating'),
     path('edit_profile/', views.edit_profile,name='edit_profile'),
     path('course/<int:course_number>', views.course_view, name='course'),
+    path('course/<int:course_number>/estimate<int:estimate>', views.course_view, name='course_estimate'),
     path('email/', include(mail_urls)),
     path('instructions', views.instructions, name='instructions'),
     path('faq', views.faq, name='faq'),

@@ -1,13 +1,5 @@
 before working version:
 
-* finish analyzing data with more algos and exclude users with less then 8
-    ratings
-
-* update course page:
-    -style
-    -give average when cant estimate
-    -additional data about estimation (how many neighbors)
-
 * create early access group
 
 * send mail to users about perks
@@ -18,7 +10,7 @@ ________________________________________________________
 
 * add stats page
 
-*improve faq look
+* improve faq look
 
 * add footer
 

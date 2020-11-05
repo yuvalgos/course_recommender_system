@@ -19,9 +19,15 @@
             <tr>
                 <td style="text-align:right;">קישורים שימושיים:</td>
                 <td style="text-align:right;">
+
                     <a target="_blank" rel="noopener noreferrer" href="{{ug_url}}">
                         עמוד הקורס בUG
                     </a>
+                     /
+                    <a href="{% url 'add_course_rating' course_number=course.number %}">
+                        הוסף/ערוך דירוג
+                    </a>
+
                 </td>
             </tr>
             {% if not user_estimable %}
@@ -73,16 +79,22 @@
         </tbody>
     </table>
 </div>
-
+{% if not user_rated_course %}
+<h4>
+    <u>    שערוך קושי/עומס של הקורס עבורך:</u>
+</h4>
+{% endif %}
+<ul>
 {% if user_authenticated and user_estimable and not user_rated_course %}
     {% if not estimate %}
+        <li>
         <a href="{% url 'course_estimate' course_number=course.number estimate=1 %}">
             <button id="estimate" onclick="showLoadingBar()" class="btn waves-effect waves-left">
                 קבל שערוך
                 <i class="material-icons left">linear_scale</i>
             </button>
         </a>
-
+        </li>
         <div id="LoadingBar" class="container" style="display:none;">
             <h6>טוען...</h6>
             <div class="progress">
@@ -96,22 +108,38 @@
         }
         </script>
     {% else %}
-<p>
-        קושי משוערך:
-        {{est_diff | floatformat:2}}
-        <br>
-        עומס משוערך:
-        {{est_wload | floatformat:2}}
-        <br>
-        זמן חישוב:
-        {{calc_time}}
+        <p>
+            {% if was_impossible %}
+                לא ניתן לשערך קושי ועומס עבור הקורס כי אין מספיק אנשים עם דירוגים משותפים שלך שדירגו אותו.
+                מציג דירוגים ממוצעים.
+                <br>
+            <b>
+                קושי ממוצע במערכת: {{course.average_difficulty | floatformat:2}}
+                <br>
+                עומס ממוצע במערכת: {{course.average_workload | floatformat:2}}
+            </b>
+            <br>
+                    (לפי
+            {{course.ratings_count}}
+            דירוגים)
+            {% else %}
+                קושי משוערך:
+                {{est_diff | floatformat:2}}
+                <br>
+                עומס משוערך:
+                {{est_wload | floatformat:2}}
+            {% endif %}
+            <br>
+            זמן חישוב:
+            {{calc_time}}
+        </p>
     {% endif %}
-</p>
+
 
 {% elif user_authenticated and not user_estimable %}
     <h5>כדי לשערך רמת עומס/קושי של קורס עליך לדרג לפחות 8 קורסים. עם פחות מזה השערוך לא מספיק טוב. אם עוד לא עשית 8 קורסים הדירוג הממוצע הוא מדד דיי טוב בנתיים! </h5>
 {% elif not user_authenticated %}
     <h5>כדי לשערך רמת עומס/קושי של קורס עליך להתחבר או להרשם ולדרג קורסים. בנתיים מוצג רק דירוג ממוצע במערכת.</h5>
 {% endif %}
-
+</ul>
 {% endblock content %}

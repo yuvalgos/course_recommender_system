@@ -154,6 +154,7 @@ def add_course_rating(request, course_number):
     # check if user already has rating to that course :
     course_ratings = models.CourseRating.objects.filter(user=request.user,
                                                         course=course)
+
     if len(course_ratings) != 0:
         return redirect(reverse("edit_course_rating",
                                 kwargs={'course_number': course.number}))
@@ -295,6 +296,9 @@ def course_view(request, course_number, estimate=False):
     elif estimate:
         est_wload, est_diff, calc_time = recommend(user=request.user.id,
                                                    course=course.number)
+        if est_diff == None or est_wload == None:
+            contex["was_impossible"] = True
+
         contex["estimate"] = 1
         contex["est_wload"] = est_wload
         contex["est_diff"] = est_diff

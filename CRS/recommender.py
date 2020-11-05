@@ -25,8 +25,12 @@ def recommend(user, course):
     data_difficulty = Dataset.load_from_df(df_difficulty, reader)
     data_workload = Dataset.load_from_df(df_workload, reader)
 
-    # todo: to be tuned:
-    algorithm_difficulty = KNNBasic()
+    sim_options = {
+        "name": "msd",
+        "user_based": False,
+        "min support": 1,  # min number of common items between user for similarity not to be 0
+    }
+    algorithm_difficulty = KNNBasic(min_k=2, sim_options=sim_options)
     trainset_difficulty = data_difficulty.build_full_trainset()
     algorithm_difficulty.fit(trainset_difficulty)
 

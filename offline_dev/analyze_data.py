@@ -115,7 +115,6 @@ def tune_KNNWithZScore(diff_data, wl_data, output_file):
     output_file.write("-------------------------------------------------\n\n")
 
 
-
 def tune_SlopeOne(diff_data, wl_data, output_file):
     param_grid = {}
 

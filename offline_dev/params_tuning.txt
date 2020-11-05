@@ -1,8 +1,48 @@
 -------------------------------------------------
+KNNWithZScore:
+-------------------------------------------------
+difficulty:
+best score: 1.7836467808490133
+best params: {'sim_options': {'name': 'msd', 'user_based': True, 'min support': 1}, 'min_k': 1}
+
+workload:
+best score: 1.8076003095137985
+best params: {'sim_options': {'name': 'cosine', 'user_based': True, 'min support': 1}, 'min_k': 1}
+-------------------------------------------------
+
+-------------------------------------------------
+KNNWithMeans:
+-------------------------------------------------
+difficulty:
+best score: 1.7253952309157963
+best params: {'sim_options': {'name': 'cosine', 'user_based': False, 'min support': 1}, 'min_k': 1}
+
+workload:
+best score: 1.5485003543446612
+best params: {'sim_options': {'name': 'msd', 'user_based': False, 'min support': 1}, 'min_k': 3}
+-------------------------------------------------
+
+-------------------------------------------------
 KNNBasic:
 -------------------------------------------------
 difficulty:
-best score: 1.7673629006916018
-best params: {'sim_options': {'name': 'msd', 'user_based': True, 'min support': 1, 'min_k': 1}}
+best score: 1.64654070749386
+best params: {'sim_options': {'name': 'msd', 'user_based': False, 'min support': 1}, 'min_k': 4}
+
+workload:
+best score: 1.656046154307952
+best params: {'sim_options': {'name': 'msd', 'user_based': False, 'min support': 1}, 'min_k': 5}
+-------------------------------------------------
+
+-------------------------------------------------
+SlopeOne:
+-------------------------------------------------
+difficulty:
+best score: 1.8411493271088641
+best params: {}
+
+workload:
+best score: 1.931547120605713
+best params: {}
 -------------------------------------------------
 

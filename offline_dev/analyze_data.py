@@ -2,7 +2,7 @@ import pandas as pd
 from surprise import Dataset
 from surprise import Reader
 from surprise.model_selection import GridSearchCV
-from surprise import KNNWithMeans, KNNBasic
+from surprise import KNNWithMeans, KNNBasic, KNNWithZScore, SlopeOne
 
 
 PARAMS_TUNING_FILE_NAME = "offline_dev/params_tuning.txt"
@@ -22,26 +22,35 @@ def print_stats(ratings_df):
     print(ratings_df['course'].value_counts().head(10))
 
 
-def cv_KNNWithMeans(ratings_df):
-    reader = Reader(rating_scale=(1, 10))
-
-    difficulty_df = ratings_df[['user', 'course', 'difficulty']]
-
-    data = Dataset.load_from_df(difficulty_df,
-                                reader)
-
+def tune_KNNWithMeans(diff_data, wl_data, output_file):
     sim_options = {
         "name": ["msd", "cosine"],
         "user_based": [False, True],
-        "min support": [1, 2, 3, 4, 5],
+        "min support": [1, 2, 3, 4, 5],  # min number of common items between user for similarity not to be 0
     }
-    param_grid = {"sim_options": sim_options, }
+    param_grid = {"sim_options": sim_options,
+                  "min_k": [1, 2, 3, 4, 5]  # minimum neighbors to calculate
+                  }
 
-    gs = GridSearchCV(KNNWithMeans, param_grid, measures=["rmse", "mae"], cv=3)
-    gs.fit(data)
-    print("---best mae score: ", gs.best_score["mae"])
-    print("---best mae params: ", gs.best_params["mae"])
-    print("---best mae index: ", gs.best_index["mae"])
+    gs = GridSearchCV(KNNWithMeans, param_grid, measures=["mae"], cv=3)
+
+    output_file.write("-------------------------------------------------\n")
+    output_file.write("KNNWithMeans:\n")
+    output_file.write("-------------------------------------------------\n")
+    output_file.write("difficulty:\n")
+    gs.fit(diff_data)
+    output_file.write("best score: ")
+    output_file.write(str(gs.best_score["mae"]) + "\n")
+    output_file.write("best params: ")
+    output_file.write(str(gs.best_params["mae"]) + "\n")
+
+    output_file.write("\nworkload:\n")
+    gs.fit(wl_data)
+    output_file.write("best score: ")
+    output_file.write(str(gs.best_score["mae"]) + "\n")
+    output_file.write("best params: ")
+    output_file.write(str(gs.best_params["mae"]) + "\n")
+    output_file.write("-------------------------------------------------\n\n")
 
 
 def tune_KNNBasic(diff_data, wl_data, output_file):
@@ -49,19 +58,81 @@ def tune_KNNBasic(diff_data, wl_data, output_file):
         "name": ["msd", "cosine"],
         "user_based": [False, True],
         "min support": [1, 2, 3, 4, 5],  # min number of common items between user for similarity not to be 0
-        "min_k": [1, 2, 3, 4, 5]  # minimum neighbors to calculate
     }
-    param_grid = {"sim_options": sim_options}
+    param_grid = {"sim_options": sim_options,
+                  "min_k": [1, 2, 3, 4, 5]  # minimum neighbors to calculate
+                  }
 
-    gs = GridSearchCV(KNNBasic, param_grid, measures=["rmse", "mae"], cv=3)
-
-    gs.fit(diff_data)
+    gs = GridSearchCV(KNNBasic, param_grid, measures=["mae"], cv=3)
 
     output_file.write("-------------------------------------------------\n")
+    output_file.write("KNNWithZScore:\n")
+    output_file.write("-------------------------------------------------\n")
+    output_file.write("difficulty:\n")
+    gs.fit(diff_data)
+    output_file.write("best score: ")
+    output_file.write(str(gs.best_score["mae"]) + "\n")
+    output_file.write("best params: ")
+    output_file.write(str(gs.best_params["mae"]) + "\n")
 
+    output_file.write("\nworkload:\n")
+    gs.fit(wl_data)
+    output_file.write("best score: ")
+    output_file.write(str(gs.best_score["mae"]) + "\n")
+    output_file.write("best params: ")
+    output_file.write(str(gs.best_params["mae"]) + "\n")
+    output_file.write("-------------------------------------------------\n\n")
+
+
+def tune_KNNWithZScore(diff_data, wl_data, output_file):
+    sim_options = {
+        "name": ["msd", "cosine"],
+        "user_based": [False, True],
+        "min support": [1, 2, 3, 4, 5],  # min number of common items between user for similarity not to be 0
+    }
+    param_grid = {"sim_options": sim_options,
+                  "min_k": [1, 2, 3, 4, 5]  # minimum neighbors to calculate
+                  }
+
+    gs = GridSearchCV(KNNWithZScore, param_grid, measures=["mae"], cv=3)
+
+    output_file.write("-------------------------------------------------\n")
     output_file.write("KNNBasic:\n")
     output_file.write("-------------------------------------------------\n")
     output_file.write("difficulty:\n")
+    gs.fit(diff_data)
+    output_file.write("best score: ")
+    output_file.write(str(gs.best_score["mae"]) + "\n")
+    output_file.write("best params: ")
+    output_file.write(str(gs.best_params["mae"]) + "\n")
+
+    output_file.write("\nworkload:\n")
+    gs.fit(wl_data)
+    output_file.write("best score: ")
+    output_file.write(str(gs.best_score["mae"]) + "\n")
+    output_file.write("best params: ")
+    output_file.write(str(gs.best_params["mae"]) + "\n")
+    output_file.write("-------------------------------------------------\n\n")
+
+
+
+def tune_SlopeOne(diff_data, wl_data, output_file):
+    param_grid = {}
+
+    gs = GridSearchCV(SlopeOne, param_grid, measures=["mae"], cv=3)
+
+    output_file.write("-------------------------------------------------\n")
+    output_file.write("SlopeOne:\n")
+    output_file.write("-------------------------------------------------\n")
+    output_file.write("difficulty:\n")
+    gs.fit(diff_data)
+    output_file.write("best score: ")
+    output_file.write(str(gs.best_score["mae"]) + "\n")
+    output_file.write("best params: ")
+    output_file.write(str(gs.best_params["mae"]) + "\n")
+
+    output_file.write("\nworkload:\n")
+    gs.fit(wl_data)
     output_file.write("best score: ")
     output_file.write(str(gs.best_score["mae"]) + "\n")
     output_file.write("best params: ")
@@ -81,8 +152,11 @@ def tune_params(ratings_df):
     output_file = open(PARAMS_TUNING_FILE_NAME, "w+")
 
     tune_KNNBasic(diff_data, wl_data, output_file)
+    tune_KNNWithMeans(diff_data, wl_data, output_file)
+    tune_KNNWithZScore(diff_data, wl_data, output_file)
+    tune_SlopeOne(diff_data, wl_data, output_file)
 
-
+    output_file.close()
 
 
 def main():
@@ -92,6 +166,7 @@ def main():
     print_stats(ratings_df) # not to file
 
     tune_params(ratings_df)
+
 
 if __name__ == "__main__":
     main()

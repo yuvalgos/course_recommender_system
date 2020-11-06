@@ -28,4 +28,5 @@ urlpatterns = [
     path('add_courses', views.add_courses, name='add_courses'),
     path('add_extra_courses', views.add_extra_courses, name='add_extra_courses'),
     path('download_ratings', views.download_ratings, name='download_ratings'),
+    path('run_script', views.run_script, name='run_script'),
 ]

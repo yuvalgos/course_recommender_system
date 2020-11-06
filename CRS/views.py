@@ -10,6 +10,7 @@ from django.urls import reverse
 from django_email_verification import sendConfirm
 from django_pandas.io import read_frame
 from datetime import datetime
+from django.contrib.auth.models import Group
 from .recommender import recommend
 
 from . import models
@@ -374,4 +375,22 @@ def download_ratings(request):
     response['Content-Disposition'] =\
         'attachment; filename=ratings.csv'
     return response
+
+
+@staff_member_required
+def run_script(request):
+    ### insert script here: ###
+
+    # add users with more then 8 ratings to early access group:
+    early_access_list = []
+    all_users = models.User.objects.all()
+    group = Group.objects.get(name='early_access')
+
+    for u in all_users:
+        count = len(models.CourseRating.objects.filter(user=u)
+        if count >= 8:
+            u.group.add(group)
+
+    ###########################
+    return render(request, template_name='CRS/management.html')
 

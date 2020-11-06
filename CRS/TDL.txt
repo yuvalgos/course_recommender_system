@@ -1,7 +1,5 @@
 before working version:
 
-* create early access group
-
 * send mail to users about perks
 
 * add faqs

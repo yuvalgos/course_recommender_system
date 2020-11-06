@@ -62,6 +62,9 @@
     <b>
         {{ user.username|default:'אורח'}}
         {% if user.is_authenticated %}
+            {% if user.groups.filter(name="early_access").exists() %}
+                <span style="color:grey; font-size:70%">(early access)</span>
+            {% endif %}
             <a href="{% url 'edit_profile' %}">(עריכת פרופיל) </a>
             <a href="{% url 'logout' %}">(התנתק)</a>
         {% else %}

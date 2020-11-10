@@ -1,9 +1,4 @@
-before working version:
-
-* send mail to users about perks
-
-* add faqs
-________________________________________________________
+______________________________________
 * migrate to bootstrap
 
 * add stats page

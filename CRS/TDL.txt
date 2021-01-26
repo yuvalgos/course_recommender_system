@@ -5,15 +5,6 @@ ______________________________________
 
 * histograms
 
-
-* reimplement algorithem
-
-* check variance and bias and then try improving the algorithem using:
-bagging 
-change error method to 1-missclasification or combination
-use knn forest with centroids as in ex3 AI
-add n^2 features
-
 * add stats page
 
 * improve faq look

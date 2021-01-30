@@ -5,18 +5,24 @@
 {% endblock title %}
 
 {% block content %}
-    {% for course in search_results %}
-        <div class="card">
-            <div class="card-content">
-                <h5>{{course.name}} , {{course.number_string}}</h5>
-                {{course.info}}
-            </div>
-            <div class="card-action">
+<div class="container-fluid mt-2">
 
-                <a href="course/{{course.number}}" style="color:#006064">לעמוד הקורס</a>
+    <div class="row justify-content-center">
+        {% for course in search_results %}
+        <div class="col-auto mb-3">
+            <div class="card h-100 bg-light border-dark secondary" style="width: 32rem;">
+                <h5 class="card-header">({{course.number_string}}) {{course.name}}</h5>
+                <div class="card-body">
+                    <p class="card-text">{{course.info}} </p>
+                </div>
 
-                <a href="add_course_rating/{{course.number}}" style="color:#006064">הוסף דירוג לקורס</a>
+                <div class="card-footer">
+                    <a class="card-link btn" href="course/{{course.number}}" style="color:#006064">לעמוד הקורס</a>
+                    <a class="card-link btn" href="add_course_rating/{{course.number}}" style="color:#006064">הוסף דירוג לקורס</a>
+                </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}

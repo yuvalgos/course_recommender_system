@@ -27,74 +27,74 @@
 
 <body dir="rtl">
 
-<nav class="cyan darken-2">
-    <div class="container nav-wrapper" dir="ltr">
-        <a href="/" class="brand-logo left" style="font-size: 150%;">Technion Course Recommender</a>
-        <ul id="nav-mobile" class="right">
-            <li><a href="{% url 'contact_us' %}">יצירת קשר</a></li>
-            <li><a href="{% url 'faq' %}">שאלות נפוצות</a></li>
-            <li><a href="{% url 'instructions' %}">הוראות</a></li>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'my_courses' %}">הקורסים שלי</a></li>
-            {% endif %}
-            <li><a href="/">ראשי</a></li>
-        </ul>
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #4DD0E1;">
+    <!-- bg color is cyan-300 -->
+    <div class="container container-fluid">
+        <a class="navbar-brand" href="/">Course Recommender</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse fixed-right position-relative right-0" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/">ראשי</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'instructions' %}">הוראות</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'faq' %}">שאלות נפוצות</a></li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ user.username|default:'אורח'}}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'my_courses' %}">הקורסים שלי</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' %}">עריכת פרופיל </a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">התנתק</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{% url 'login' %}">התחבר </a></li>
+                        <li><a class="dropdown-item" href="{% url 'register' %}">הירשם</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
-
-<nav class="cyan darken-2" dir="rtl">
-    <div>
-        <form class="container" action="{% url 'new_search' %}" method="post">
-            {% csrf_token %}
-                <ul>
-                    <li style="width:20%">
-                        <button class="btn waves-effect waves-left" name="action" type="submit">
-                            <!--<i class="Tiny material-icons left">search</i>-->
-                            חפש
-                        </button>
-                    </li>
-
-                    <li style="width:69%">
-                        <input type="text" name="search" placeholder="הכנס שם או מספר קורס">
-                    </li>
-                    <listyle="width:10%">
-                        חפש קורס:
-                    </li>
-
-                </ul>
-        </form>
-    </div>
-</nav>
-
-<div class="container">
-    <b>
-        {{ user.username|default:'אורח'}}
-        {% if user.is_authenticated %}
-            <a href="{% url 'edit_profile' %}">(עריכת פרופיל) </a>
-            <a href="{% url 'logout' %}">(התנתק)</a>
-        {% else %}
-            <a href="{% url 'login' %}">(התחבר) </a>
-            <a href="{% url 'register' %}">(הירשם)</a>
-        {% endif %}
-    </b>
+<div class="container-fluid" style="background-color: #4DD0E1;">
+    <form class="d-flex container" action="{% url 'new_search' %}" method="post">
+        {% csrf_token %}
+        <input class="form-control input-light me-2" type="search" name="search" placeholder="הקלד שם או מספר קורס" aria-label="Search">
+        <button class="btn btn-outline-dark" name="action" type="submit">חפש</button>
+    </form>
+    <br>
 </div>
 
+<br>
+
 <div class="container">
 
-    <div class="cyan lighten-4" style="font-size:250%; border-style: solid; border-color: grey; border-width: 1px;"">
+    <div style="font-size:250%; border-style: solid; border-color: grey;
+                           background-color: #4DD0E1; border-width: 1px;">
+        <!-- bg color is cyan-300 -->
         {% block title %}
 
         {% endblock title %}
     </div>
 
-    <div class="cyan lighten-5" style="font-size:120%; border-style: solid; border-color: grey; border-width: 1px;">
+    <div class="cyan lighten-5" style="font-size:120%; border-style: solid;
+                                        background-color: #E0F7FA; border-color: grey; border-width: 1px;">
+        <!-- bg color is cyan-50 -->
         {% block content %}
 
         {% endblock content %}
      </div>
 </div>
-<br>
 
+
+<div class="container">
+<a class="nav-link" href="{% url 'contact_us' %}">יצירת קשר</a>
+</div>
 
 {% block javascript %}
 

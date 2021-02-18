@@ -5,44 +5,43 @@
 {% endblock title %}
 
 {% block content %}
-    {% if total_credit != 0 %}
+
+
+<div class="container-fluid mt-2">
+        {% if total_credit != 0 %}
     <p>סה"כ נקודות זכות:
     {{total_credit}}</p>
     {% endif %}
 
+    <div class="row justify-content-center">
     {% for course_rating in course_ratings %}
-        <div class="card">
-            <div class="card-content">
-                <h5>{{course_rating.course.name}},
-                    {{course_rating.course.number_string}}</h5>
-                <h6>נקודות זכות:
-                {{course_rating.course.credit_points}}</h6>
-                <ul>
-                    <li> רמת קושי:
-                        {{course_rating.difficulty}}
-                    </li>
-                    <li>רמת עומס:
-                        {{course_rating.workload}}
-                    </li>
-                    {% if course_rating.final_grade %}
-                        <li>
-                             ציון:
-                            {{course_rating.final_grade}}
-                        </li>
-                    {% endif %}
+        <div class="col-auto mb-3">
 
+            <div class="card h-100 bg-light border-dark secondary" style="width: 18rem;">
+                <h5 class="card-header">({{course_rating.course.number_string}}) {{course_rating.course.name}}
+                <I><h6>{{course_rating.course.credit_points}}
+                    נק"ז</h6></I></h5>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">רמת קושי:
+                            {{course_rating.difficulty}}</li>
+                    <li class="list-group-item">רמת עומס:
+                            {{course_rating.workload}}</li>
                 </ul>
+                <div class="card-footer">
+                    <a class="card-link btn" href="../course/{{course_rating.course.number}}" style="color:#006064">לעמוד הקורס</a>
+                    <a class="card-link btn" href="../edit_course_rating/{{course_rating.course.number}}" style="color:#006064">עריכת הדירוג</a>
+                    <a class="card-link btn" href="../delete_course_rating/{{course_rating.course.number}}" style="color:#006064">הסרת הדירוג</a>
+                </div>
             </div>
-            <div class="card-action">
 
-                <a href="../course/{{course_rating.course.number}}" style="color:#006064">לעמוד הקורס</a>
-
-                <a href="../edit_course_rating/{{course_rating.course.number}}" style="color:#006064">עריכת הדירוג</a>
-                <a href="../delete_course_rating/{{course_rating.course.number}}" style="color:#006064">הסרת הדירוג</a>
-                  <!-- Modal Structure -->
-            </div>
         </div>
     {% endfor %}
+    </div>
+
+</div>
+
+
 
 {% endblock content %}
 

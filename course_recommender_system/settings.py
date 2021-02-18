@@ -29,7 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['courserecommendersystem.herokuapp.com',
                  'localhost',
-                 '127.0.0.1']
+                 '127.0.0.1',]
 
 # Application definition
 INSTALLED_APPS = [

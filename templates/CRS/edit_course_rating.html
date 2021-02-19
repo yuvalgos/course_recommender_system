@@ -9,38 +9,36 @@
 
 <form method="post">
     {% csrf_token %}
-        <ul>
-            <li>
-                {{ form.difficulty.label}}
-                <p class="range-field" dir="ltr">
-                {{ form.difficulty}}
-                </p>
-                <br>
-            </li>
-
-            <li>
-                {{ form.workload.label}}
-                <p class="range-field" dir="ltr">
-                {{ form.workload}}
-                </p>
-                <br>
-            </li>
-
-            <li>
-                {{ form.final_grade.label}}
-                <p dir="ltr">
-                {{ form.final_grade}}
-                </p>
-            </li>
-
-
-        <li>
-            <button class="btn waves-effect waves-left" type="submit" name="action">שמור
-            <i class="material-icons left">save</i></button>
-        </li>
-        </ul>
-    </p>
-
+    <table class="table">
+        <tr>
+            <th style="width: 30%;">{{ form.difficulty.label}}</th>
+            <th>
+                {{ form.difficulty }}
+                <output>{{form.difficulty.value}}</output>
+                <!-- output is prior value, updated by js code written in the form class -->
+            </th>
+        </tr>
+        <tr>
+            <th>{{ form.workload.label}}</th>
+            <th>
+                {{ form.workload }}
+                <output>{{form.workload.value}}</output>
+                <!-- output is prior value, updated by js code written in the form class -->
+            </th>
+        </tr>
+        <tr>
+            <th>{{ form.final_grade.label}}</th>
+            <th>{{ form.final_grade}}</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>
+                <button class="btn btn-outline-dark" type="submit" value="save">
+                    שמור
+                </button>
+            </th>
+        </tr>
+    </table>
 
 </form>
 

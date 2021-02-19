@@ -56,7 +56,7 @@ class StudentRegForm(ModelForm):
         cp = self.cleaned_data['credit_points']
         if cp is not None:
             if cp < 0 or cp > 400:
-                raise ValidationError('אם אתה לא רוצה להגיד כמה נק"ז צברת, לא צריך טובות, פשוא השאר את השדה ריק')
+                raise ValidationError('אם אתה לא רוצה להגיד כמה נק"ז צברת, לא צריך טובות, פשוט השאר את השדה ריק')
         return cp
 
     def clean_semester(self):
@@ -78,7 +78,7 @@ class StudentRegForm(ModelForm):
         }
         help_texts = {
             'semester': 'כמה סמסטרים עברת מתחילת התואר, לא כולל הנוכחי'
-                        '<br><br>',
+                        '',
             'want_emails': 'לא נשלח פרסומות או כמות מוגזמת של מיילים, רק עדכונים חשובים לעיתים רחוקות'
         }
         widgets = {'want_emails': Select(choices=[(True, '      אין בעיה'),
@@ -103,12 +103,14 @@ class CourseRatingForm(ModelForm):
         }
         widgets = {
             'difficulty': forms.NumberInput(
-                attrs={'type': 'range', 'min': '1', 'step': '0.5',
-                       'max': '10', 'value': '5', 'style': 'border-style: none;'}
+                attrs={'type': 'range', 'class': 'form-range', 'min': '1', 'step': '0.5',
+                       'max': '10', 'value': '5', 'style': 'border-style: none;',
+                       'oninput': 'this.nextElementSibling.value = this.value'}
             ),
             'workload': forms.NumberInput(
-                attrs={'type': 'range', 'min': '1', 'step': '0.5',
-                       'max': '10', 'value': '5', 'style': 'border-style: none;'}
+                attrs={'type': 'range', 'class': 'form-range', 'min': '1', 'step': '0.5',
+                       'max': '10', 'value': '5', 'style': 'border-style: none;',
+                       'oninput': 'this.nextElementSibling.value = this.value'}
             ),
             'final_grade': forms.NumberInput(
                 attrs={'type': 'Number', 'min': '0',

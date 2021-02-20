@@ -6,32 +6,104 @@
 
 {% block content %}
 <div class="container">
-    <table class="highlight" style="text-align:right;">
-        <tbody>
+    <h3>מידע כללי</h3>
+    <table class="table table-hover table-light">
             <tr>
-                <td style="text-align:right; width:20%" >מידע:</td>
-                <td style="text-align:right; width:80%">{{course.info}}</td>
+                <td style="width:20%" >סילבוס (UG):</td>
+
+                <td style="width:80%">{{course.info}}</td>
             </tr>
             <tr>
-                <td style="text-align:right;">נקודות זכות:</td>
+                <td>נקודות זכות:</td>
                 <td style="text-align:right;">{{course.credit_points}}</td>
             </tr>
             <tr>
-                <td style="text-align:right;">קישורים שימושיים:</td>
-                <td style="text-align:right;">
-
-                    <a target="_blank" rel="noopener noreferrer" href="{{ug_url}}">
+                <td>קישורים שימושיים:</td>
+                <td>
+                    <a class="btn btn-outline-dark" target="_blank" rel="noopener noreferrer" href="{{ug_url}}">
                         עמוד הקורס בUG
                     </a>
-                     /
-                    <a href="{% url 'add_course_rating' course_number=course.number %}">
+                    <a class="btn btn-outline-dark" href="{% url 'add_course_rating' course_number=course.number %}">
                         הוסף/ערוך דירוג
                     </a>
 
                 </td>
             </tr>
+    </table>
+
+     {% if user_rated_course %}
+        <h3>הדירוג שלך</h3>
+        <table class="table table-hover table-light">
+            <tr>
+                <td style="width:20%">דירוג רמת קושי:</td>
+                <td style="width:80%">
+                    <b>{{user_rated_course.difficulty}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>דירוג רמת עומס:</td>
+                <td >
+                    <b>{{user_rated_course.workload}}</b>
+                </td>
+            </tr>
+            {% if user_rated_course.final_grade %}
+            <tr>
+                <td>ציון סופי:</td>
+                <td>
+                    <b>{{user_rated_course.final_grade}}</b>
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    {% endif %}
+
+    <h3>סטטיסטיקת דירוגים</h3>
+    {% if course.ratings_count == 0 %}
+    <div class="alert alert-info" role="alert">
+        לקורס עדיין אין דירוגים. שתפו זאת ואולי סטודנטים שעשו את הקורס יוסיפו דירוג!
+    </div>
+    {% else %}
+    <table class="table table-hover table-light">
+        <tr>
+            <td style="width:20%">מספר דירוגים:</td>
+            <td style="width:80%">
+                {{course.ratings_count}}
+            </td>
+        </tr>
+        <tr>
+            <td style="width:20%">דירוג קושי ממוצע במערכת:</td>
+            <td style="width:80%" dir="ltr">
+                <div class="progress" style="height: 120%; font-size:120%;">
+                    <div class="progress-bar progress-bar-striped bg-info text-dark" role="progressbar" style="width: {{ avg_diff_100 }}%;"
+                       aria-valuenow="{{course.average_difficulty | floatformat:2}}" aria-valuemin="0" aria-valuemax="10">
+                        <b>{{course.average_difficulty | floatformat:2}}</b>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td>דירוג עומס ממוצע במערכת:</td>
+            <td>
+                <b>{{course.average_workload | floatformat:2}}</b>
+            </td>
+        </tr>
+
+        <!-- TBD:
+        <tr>
+            <td>היסטוגרמת דירוגים</td>
+            <td>
+                צפיה בהיסטוגרמה
+            </td>
+        </tr>
+        -->
+    </table>
+    {% endif %} <!-- end to if no rankings -->
+
+
+
+
             {% if not user_estimable %}
-            <tr><td></td></tr>
             <tr>
                 <td style="text-align:right;">דירוג קושי ממוצע במערכת:</td>
                 <td style="text-align:right;">
@@ -75,8 +147,6 @@
               </tr>
             </b>
             {% endif %}
-
-        </tbody>
     </table>
 </div>
 {% if not user_rated_course %}

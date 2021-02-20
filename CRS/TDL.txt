@@ -1,7 +1,6 @@
 ______________________________________
 * migrate to bootstrap
-
-* correct estimation -> prediction (שערוך -> חיזוי)
+    correct averages after push!!
 
 * histograms
 

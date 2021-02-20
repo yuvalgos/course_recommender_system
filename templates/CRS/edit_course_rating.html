@@ -12,17 +12,17 @@
     <table class="table">
         <tr>
             <th style="width: 30%;">{{ form.difficulty.label}}</th>
-            <th>
+            <th dir="ltr">
                 {{ form.difficulty }}
-                <output>{{form.difficulty.value}}</output>
+                <output style="text-align:center; display: block; font-size:150%">{{ form.difficulty.value }}</output>
                 <!-- output is prior value, updated by js code written in the form class -->
             </th>
         </tr>
         <tr>
             <th>{{ form.workload.label}}</th>
-            <th>
+            <th dir="ltr">
                 {{ form.workload }}
-                <output>{{form.workload.value}}</output>
+                <output style="text-align:center; display: block; font-size:150%">{{ form.workload.value }}</output>
                 <!-- output is prior value, updated by js code written in the form class -->
             </th>
         </tr>

@@ -206,6 +206,9 @@ def edit_course_rating(request, course_number):
     course_rating = get_object_or_404(CourseRating,
                                       course=course,
                                       user=request.user)
+    old_diff = course_rating.difficulty
+    old_wl = course_rating.workload
+
     if request.method == "GET":
         course_name_and_number = course.number_string + " " + course.name
         return render(
@@ -217,11 +220,11 @@ def edit_course_rating(request, course_number):
     elif request.method == "POST":
         form = CourseRatingForm(request.POST, instance=course_rating)
         if form.is_valid():
-            old_diff = course_rating.difficulty
-            old_wl = course_rating.workload
             form.save()
             new_diff = course_rating.difficulty
             new_wl = course_rating.workload
+
+            print(old_diff, new_diff)
 
             # update course average ratings:
             course_sum_diff = course.average_difficulty * float(course.ratings_count)
@@ -231,6 +234,7 @@ def edit_course_rating(request, course_number):
             course.average_difficulty = course_sum_diff / float(course.ratings_count)
             course.average_workload = course_sum_wl / float(course.ratings_count)
             course.save()
+            print("course saved")
 
         # if form is not valid, user is still redirected to my_courses, but it shouldn't happen
         return redirect(reverse("my_courses"))
@@ -284,12 +288,19 @@ def course_view(request, course_number, estimate=False):
         user_rated_course = None
         user_estimable = False
 
+    # avg_diff_100 and avg_wl_100 are used for bar width out of 100%
+    avg_diff_100, avg_wl_100 = None, None
+    if course.average_difficulty is not None:
+        avg_diff_100= course.average_difficulty*10
+        avg_wl_100 = course.average_workload*10
+
     contex = {"course": course,
               "ug_url": ug_url,
               "user_authenticated": user_authenticated,
               "user_estimable": user_estimable,
-              "user_rated_course": user_rated_course}
-
+              "user_rated_course": user_rated_course,
+              "avg_diff_100": avg_diff_100,
+              "avg_wl_100": avg_wl_100}
 
     if not estimate:
         contex["estimate"] = 0

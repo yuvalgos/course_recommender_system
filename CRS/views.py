@@ -282,7 +282,7 @@ def course_view(request, course_number, estimate=False):
             if rating.course.number == course_number:
                 user_rated_course = rating
 
-        user_estimable = len(user_ratings) > 8
+        user_estimable = len(user_ratings) >= 8
     else:
         user_authenticated = False
         user_rated_course = None

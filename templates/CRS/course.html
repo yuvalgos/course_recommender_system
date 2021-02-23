@@ -79,13 +79,17 @@
                         <b>{{course.average_difficulty | floatformat:2}}</b>
                     </div>
                 </div>
-
             </td>
         </tr>
         <tr>
             <td>דירוג עומס ממוצע במערכת:</td>
-            <td>
-                <b>{{course.average_workload | floatformat:2}}</b>
+            <td dir="ltr">
+                <div class="progress" style="height: 120%; font-size:120%;">
+                    <div class="progress-bar progress-bar-striped bg-info text-dark" role="progressbar" style="width: {{ avg_wl_100 }}%;"
+                       aria-valuenow="{{course.average_workload | floatformat:2}}" aria-valuemin="0" aria-valuemax="10">
+                        <b>{{course.average_workload | floatformat:2}}</b>
+                    </div>
+                </div>
             </td>
         </tr>
 
@@ -101,117 +105,62 @@
     {% endif %} <!-- end to if no rankings -->
 
 
+    {% if not user_rated_course %}
+        <h3>
+            חיזוי קושי/עומס של הקורס שמתאים לך
+        </h3>
+        <div class="alert alert-light" role="alert">
+        {% if user_authenticated and user_estimable and not user_rated_course %}
+            {% if not estimate %}
 
+                <a href="{% url 'course_estimate' course_number=course.number estimate=1 %}">
+                    <button class="btn btn-outline-dark" id="estimate" onclick="showLoadingBar()" >
+                        קבל חיזוי
+                    </button>
+                </a>
 
-            {% if not user_estimable %}
-            <tr>
-                <td style="text-align:right;">דירוג קושי ממוצע במערכת:</td>
-                <td style="text-align:right;">
-                    <b>
-                    {{course.average_difficulty | floatformat:2}}
-                    </b>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:right;">דירוג עומס ממוצע במערכת:</td>
-                <td style="text-align:right;">
-                    <b>{{course.average_workload | floatformat:2}}</b>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    (לפי
-            {{course.ratings_count}}
-            דירוגים)
-                </td>
-            </tr>
-            {% endif %}
-
-            {% if user_rated_course %}
-            <tr><td></td></tr>
-            <b>
-            <tr>
-                <td style="text-align:right;">דירוג רמת קושי:</td>
-                <td style="text-align:right;">
-                    <b>{{user_rated_course.difficulty}}</b>
-                    <p style="font-size:70%">(לפי הדירוג שלך)</p>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align:right;">דירוג רמת עומס:</td>
-                <td style="text-align:right;">
-                    <b>{{user_rated_course.workload}}</b>
-                    <p style="font-size:70%">(לפי הדירוג שלך)</p>
-
-                </td>
-              </tr>
-            </b>
-            {% endif %}
-    </table>
-</div>
-{% if not user_rated_course %}
-<h4>
-    <u>    חיזוי קושי/עומס של הקורס עבורך:</u>
-</h4>
-{% endif %}
-<ul>
-{% if user_authenticated and user_estimable and not user_rated_course %}
-    {% if not estimate %}
-        <li>
-        <a href="{% url 'course_estimate' course_number=course.number estimate=1 %}">
-            <button id="estimate" onclick="showLoadingBar()" class="btn waves-effect waves-left">
-                קבל חיזוי
-                <i class="material-icons left">linear_scale</i>
-            </button>
-        </a>
-        </li>
-        <div id="LoadingBar" class="container" style="display:none;">
-            <h6>טוען...</h6>
-            <div class="progress">
-              <div class="indeterminate"></div>
-            </div>
-        </div>
-        <script>
-        function showLoadingBar() {
-          document.getElementById("estimate").disabled = true;
-          document.getElementById("LoadingBar").style.display = "block";
-        }
-        </script>
-    {% else %}
-        <p>
-            {% if was_impossible %}
-                לא ניתן לחזות קושי ועומס עבור הקורס כי אין מספיק אנשים עם דירוגים משותפים שלך שדירגו אותו.
-                מציג דירוגים ממוצעים.
-                <br>
-            <b>
-                קושי ממוצע במערכת: {{course.average_difficulty | floatformat:2}}
-                <br>
-                עומס ממוצע במערכת: {{course.average_workload | floatformat:2}}
-            </b>
-            <br>
-                    (לפי
-            {{course.ratings_count}}
-            דירוגים)
+                <div id="LoadingBar" class="container" style="display:none;">
+                    <h6>טוען...</h6>
+                    <div class="spinner-border">
+                    </div>
+                </div>
+                <script>
+                function showLoadingBar() {
+                  document.getElementById("estimate").disabled = true;
+                  document.getElementById("LoadingBar").style.display = "block";
+                }
+                </script>
             {% else %}
-                קושי משוערך:
-                {{est_diff | floatformat:2}}
-                <br>
-                עומס משוערך:
-                {{est_wload | floatformat:2}}
+                    {% if was_impossible %}
+                        <h4>
+                        לא ניתן לחזות קושי ועומס עבור הקורס כי אין מספיק אנשים עם דירוגים משותפים שלך שדירגו אותו.
+                        </h4>
+                        תוכל להעזר בנתיים בדירוגים הממוצעים ולשתף את העמוד כדי שהקורס יקבל דירוגים
+
+                    {% else %}
+                        <h5>
+                            קושי:
+                            {{est_diff | floatformat:2}}
+                            <br>
+                            עומס:
+                            {{est_wload | floatformat:2}}
+                        </h5>
+                          <!--
+                        <br>
+                        זמן חישוב:
+                        {{calc_time}}
+                        -->
+                    {% endif %}
             {% endif %}
-            <br>
-            <!--
-            זמן חישוב:
-            {{calc_time}}
-            -->
-        </p>
-    {% endif %}
 
 
-{% elif user_authenticated and not user_estimable %}
-    <h5>כדי לחזות רמת עומס/קושי של קורס עליך לדרג לפחות 8 קורסים. עם פחות מזה החיזוי לא מספיק טוב. אם עוד לא עשית 8 קורסים הדירוג הממוצע הוא מדד דיי טוב בנתיים! </h5>
-{% elif not user_authenticated %}
-    <h5>כדי לחזות רמת עומס/קושי של קורס עליך להתחבר או להרשם ולדרג קורסים. בנתיים מוצג רק דירוג ממוצע במערכת.</h5>
-{% endif %}
-</ul>
+        {% elif user_authenticated and not user_estimable %}
+            <h5>כדי לחזות רמת עומס/קושי של קורס עליך לדרג לפחות 8 קורסים. עם פחות מזה החיזוי לא מספיק טוב. אם עוד לא עשית 8 קורסים תוכל להעזר בדירוג הממוצע </h5>
+        {% elif not user_authenticated %}
+            <h5>כדי לחזות רמת עומס/קושי של קורס עליך להתחבר או להרשם ולדרג קורסים</h5>
+        {% endif %}
+    </div>
+    {% endif %} <!-- endif user not rated course -->
+
+</div>
 {% endblock content %}

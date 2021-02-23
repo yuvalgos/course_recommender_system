@@ -1,28 +1,29 @@
 {% extends 'base.html' %}
 
 {% block title %}
-יצירת קשר ודיווח על תקלות
+יצירת קשר ודיווח על תקלות ובאגים
 {% endblock title %}
 
 {% block content %}
-    <p>
-        בכל מקרה של תקלה או שלא מסתדרים עם הטופס, ניתן ליצור קשר ישירות דרך המייל :
+<div class = "container">
+        בכל מקרה של תקלה או בעיה ניתן ליצור קשר גם במייל:
         <a href="mailto: TCourseRecommender@gmail.com">TCourseRecommender@gmail.com</a>
-    </p>
-<p>
+    <br>
     <form method="post">
     {% csrf_token %}
-        <ul>
-            {{form.as_ul}}
-            <br>
-            <li>
-                <button class="btn waves-effect waves-left" type="submit" name="action">
+        <table>
+            {{form.as_table}}
+            <tr>
+                <td></td>
+                <td>
+                    <button class="btn btn-outline-dark" type="submit" name="action">
                     שלח
-                <i class="material-icons left">send</i></button>
-            </li>
-        </ul>
-
+                    </button>
+                </td>
+            </tr>
+        </table>
     </form>
-</p>
 <p>{{msg}}</p>
+
+</div>
 {% endblock content %}

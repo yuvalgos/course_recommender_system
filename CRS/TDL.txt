@@ -1,6 +1,5 @@
 ______________________________________
-* migrate to bootstrap
-    correct averages after push!!
+* correct averages after push!!
 
 * histograms
 
@@ -10,6 +9,9 @@ ______________________________________
 
 * course deletion confirmation modal see here:
     https://stackoverflow.com/questions/8982295/confirm-deletion-in-modal-dialog-using-twitter-bootstrap
+
+* use more icons in buttons (comfort) and then fix: "card goes out of content container bounds
+                                                     in search and my courses pages"
 
 * add basic documentation and order in main code files
 

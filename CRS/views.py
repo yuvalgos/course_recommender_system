@@ -224,8 +224,6 @@ def edit_course_rating(request, course_number):
             new_diff = course_rating.difficulty
             new_wl = course_rating.workload
 
-            print(old_diff, new_diff)
-
             # update course average ratings:
             course_sum_diff = course.average_difficulty * float(course.ratings_count)
             course_sum_wl = course.average_workload * float(course.ratings_count)
@@ -234,7 +232,6 @@ def edit_course_rating(request, course_number):
             course.average_difficulty = course_sum_diff / float(course.ratings_count)
             course.average_workload = course_sum_wl / float(course.ratings_count)
             course.save()
-            print("course saved")
 
         # if form is not valid, user is still redirected to my_courses, but it shouldn't happen
         return redirect(reverse("my_courses"))
@@ -403,5 +400,31 @@ def run_script(request):
     #         u.group.add(group)
     #
     # ###########################
+
+    # hotfix to recalculate courses average ratings and save that,
+    # not efficiently but simple (written in c style):
+    course_ratings = models.CourseRating.objects.all()
+    courses = models.Course.objects.all()
+
+    for course in courses:
+        sum_diff = 0
+        sum_wl = 0
+        count = 0
+        for rating in course_ratings:
+            if rating.course.number == course.number:
+                sum_diff += rating.difficulty
+                sum_wl += rating.workload
+                count += 1
+
+        if count != 0:
+            course.average_difficulty = float(sum_diff) / float(count)
+            course.average_workload = float(sum_wl) / float(count)
+            course.save()
+            print("changed", course.name, course.number_string, "to",
+                  course.average_difficulty, course.average_workload)
+
+
+
+    #############################
     return render(request, template_name='CRS/management.html')
 

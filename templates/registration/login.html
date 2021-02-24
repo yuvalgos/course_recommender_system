@@ -7,43 +7,57 @@
 {% block content %}
 
 {% if form.errors %}
-<p>שם משתמש או סיסמא שגוים, נסה שנית.</p>
-<p>
-יכול להיות שלא אישרת את ההרשמה דרך המייל הטכניוני שהזנת בהרשמה,
-   . אם אתה לא מצליח מוזמן לפנות דרך "צור קשר" עם כמה שיותר פרטים
-</p>
+<div class="alert alert-danger">
+    שם משתמש או סיסמא שגויים.
+    <br>
+    יכול להיות שלא אישרת את ההרשמה דרך המייל הטכניוני שהזנת בהרשמה
+   . אם אתה לא מצליח מוזמן לפנות דרך
+    <a class="link" href="{% url 'contact_us' %}">
+    צור קשר
+    </a>
+    .
+</div>
 {% endif %}
 
 {% if next %}
+<div class="alert alert-danger">
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.
     {% else %}
-    <p>התחבר כדי לצפות בדף זה</p>
+    התחבר כדי לצפות בדף זה
     {% endif %}
+</div>
 {% endif %}
 
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
-<table>
-<tr>
-    <td>שם משתמש: </td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>סיסמא: </td>
-    <td>{{ form.password }}</td>
-</tr>
+<table class="table">
+    <tr>
+        <td>שם משתמש: </td>
+        <td>{{ form.username }}</td>
+    </tr>
+    <tr>
+        <td>סיסמא: </td>
+        <td>{{ form.password }}</td>
+    </tr>
+    <tr><td></td>
+    <td>
+        <button class="btn btn-outline-dark" type="submit" value="login">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+                <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+            </svg>
+            התחבר
+        </button>
+    </td>
+    </tr>
 </table>
-<button class="btn waves-effect waves-left" type="submit" value="login">
-    התחבר
-<i class="material-icons left">keyboard_return</i>
-</button>
 
 <input type="hidden" name="next" value="{{ next }}">
 </form>
 
-<p><a href="{% url 'register' %}">אני צריך להרשם</a></p>
+<p><a href="{% url 'register' %}">אני צריך להירשם</a></p>
 <p><a href="{% url 'password_reset' %}">וואלה שחכתי סיסמא</a></p>
 
 {% endblock content%}

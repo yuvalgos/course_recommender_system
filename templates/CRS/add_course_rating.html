@@ -8,59 +8,70 @@
 {% block content %}
 תזכורת
 <a href="{% url 'instructions' %}">איך לדרג נכון:</a>
- <div class="collection-item">
-     <i class="material-icons secondary-content Tiny">priority_high</i>
+<ul class="list-group list-group-flush">
+    <li class="list-group-item list-group-item-info">
+     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
+      <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+      <path d="M8.354 10.354l7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+    </svg>
      להשתמש בכל הסקאלה
- </div>
- <div class="collection-item">
-     <i class="material-icons secondary-content Tiny">priority_high</i>
+    </li>
+    <li class="list-group-item list-group-item-info">
+     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
+      <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+      <path d="M8.354 10.354l7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+    </svg>
      עומס יחסי לנק"ז
- </div>
- <div class="collection-item">
-     <i class="material-icons secondary-content Tiny">priority_high</i>
+    </li>
+    <li class="list-group-item list-group-item-info">
+     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
+      <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+      <path d="M8.354 10.354l7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+    </svg>
      דירוג אובייקטיבי, רק לקורסים שסיימתם
- </div>
+    </li>
 
- <div class="collection-item">
-     <i class="material-icons secondary-content Tiny">priority_high</i>
+    <li class="list-group-item list-group-item-info">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
+          <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+          <path d="M8.354 10.354l7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+        </svg>
      הדירוג שלכם, לא מה שכולם חושבים
- </div>
+    </li>
+</ul>
 
 <form method="post">
     {% csrf_token %}
-        <ul>
-            <li>
-                {{ form.difficulty.label}}
-                <p class="range-field" dir="ltr">
-                {{ form.difficulty}}
-                </p>
-                <br>
-            </li>
-
-            <li>
-                {{ form.workload.label}}
-                <p class="range-field" dir="ltr">
-                {{ form.workload}}
-                </p>
-                <br>
-            </li>
-
-            <li>
-                {{ form.final_grade.label}}
-                <p dir="ltr">
-                {{ form.final_grade}}
-                </p>
-            </li>
-
-
-        <li>
-            <button class="btn waves-effect waves-left" type="submit" name="action">הוסף
-            <i class="material-icons left">library_add</i></button>
-        </li>
-        </ul>
-    </p>
-
-
+    <table class="table">
+        <tr>
+            <th style="width: 30%;">{{ form.difficulty.label}}</th>
+            <th dir="ltr">
+                {{ form.difficulty }}
+                <output style="text-align:center; display: block; font-size:150%">5</output>
+                <!-- output is prior value, updated by js code written in the form class -->
+            </th>
+        </tr>
+        <tr>
+            <th>{{ form.workload.label}}</th>
+            <th dir="ltr">
+                {{ form.workload }}
+                <output style="text-align:center; display: block; font-size:150%">5</output>
+                <!-- output is prior value, updated by js code written in the form class -->
+            </th>
+        </tr>
+        <tr>
+            <th>{{ form.final_grade.label}}</th>
+            <th>{{ form.final_grade}}</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>
+                <button class="btn btn-outline-dark" type="submit" value="save">
+                    שמור
+                </button>
+            </th>
+        </tr>
+    </table>
 </form>
 
 

@@ -6,11 +6,10 @@ ______________________________________
 
 * add stats page
 
-* improve faq look
-
 * add footer
 
-* improve look - corses cards and so..
+* course deletion confirmation modal see here:
+    https://stackoverflow.com/questions/8982295/confirm-deletion-in-modal-dialog-using-twitter-bootstrap
 
 * add basic documentation and order in main code files
 

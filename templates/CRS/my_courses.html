@@ -17,10 +17,11 @@
     {% for course_rating in course_ratings %}
         <div class="col-auto mb-3">
 
-            <div class="card h-100 bg-light secondary" style="width: 30rem;">
-                <h5 class="card-header">({{course_rating.course.number_string}}) {{course_rating.course.name}}
-                <I><h6>{{course_rating.course.credit_points}}
-                    נק"ז</h6></I></h5>
+            <div class="card h-100 bg-light secondary" style="width: 24rem;">
+                <h6 class="card-header">({{course_rating.course.number_string}}) {{course_rating.course.name}}
+                    <br>
+                <I>{{course_rating.course.credit_points}}
+                    נק"ז</I></h6>
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">רמת קושי:
@@ -29,9 +30,12 @@
                             {{course_rating.workload}}</li>
                 </ul>
                 <div class="card-footer">
-                    <a class="card-link btn" href="../course/{{course_rating.course.number}}" style="color:#006064">לעמוד הקורס</a>
-                    <a class="card-link btn" href="../edit_course_rating/{{course_rating.course.number}}" style="color:#006064">עריכת הדירוג</a>
-                    <a class="card-link btn" href="../delete_course_rating/{{course_rating.course.number}}" style="color:#006064">הסרת הדירוג</a>
+                    <a class="card-link btn" href="../course/{{course_rating.course.number}}"
+                       style="color:#006064; font-size:85%">עמוד הקורס</a>
+                    <a class="card-link btn" href="../edit_course_rating/{{course_rating.course.number}}"
+                       style="color:#006064; font-size:85%">עריכת דירוג</a>
+                    <a class="card-link btn" href="../delete_course_rating/{{course_rating.course.number}}"
+                       style="color:#006064; font-size:85%">הסרת דירוג</a>
                 </div>
             </div>
 

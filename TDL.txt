@@ -1,11 +1,13 @@
 ______________________________________
-* correct averages after push!!
+* add improved algorithm implementation
 
-* histograms
+* add histograms
 
 * add stats page
 
 * add footer
+
+* create tests
 
 * course deletion confirmation modal see here:
     https://stackoverflow.com/questions/8982295/confirm-deletion-in-modal-dialog-using-twitter-bootstrap

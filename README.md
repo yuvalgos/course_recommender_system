@@ -10,4 +10,5 @@ https://github.com/yuvalgos/course_recommender_system/blob/master/research/recom
 ## Developed Using:
  * python 
  * django
+ * heroku
  * courses data parsed by https://cheesefork.cf/

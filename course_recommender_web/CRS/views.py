@@ -288,7 +288,7 @@ def course_view(request, course_number, estimate=False):
     # avg_diff_100 and avg_wl_100 are used for bar width out of 100%
     avg_diff_100, avg_wl_100 = None, None
     if course.average_difficulty is not None:
-        avg_diff_100= course.average_difficulty*10
+        avg_diff_100 = course.average_difficulty*10
         avg_wl_100 = course.average_workload*10
 
     contex = {"course": course,
@@ -305,7 +305,7 @@ def course_view(request, course_number, estimate=False):
     elif estimate:
         est_wload, est_diff, calc_time = recommend(user=request.user.id,
                                                    course=course.number)
-        if est_diff == None or est_wload == None:
+        if est_diff is None or est_wload is None:
             contex["was_impossible"] = True
 
         contex["estimate"] = 1

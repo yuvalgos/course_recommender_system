@@ -45,6 +45,16 @@ class RecommenderModuleTestCase(TestCase):
         _, course_counts = np.unique(X[:, 1], return_counts=True)
         assert course_counts.min() >= MIN_RATING_COUNT_FOR_COURSE
 
+    def test_recommend(self):
+        from .recommender import recommend
+
+        pred_diff, pred_wl, calc_time = recommend(5, 3)
+        # since all ratings are 5 and the user is not bias, predictions should be 5
+        assert pred_diff == 5
+        assert pred_wl == 5
+        # it shouldn't take more then a second (well, a millisecond really)
+        assert calc_time < 1
+
 
 # NUM_OF_USERS = 1000
 # NUM_OF_COURSES = 1200

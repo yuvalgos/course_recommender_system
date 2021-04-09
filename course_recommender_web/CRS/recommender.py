@@ -3,12 +3,20 @@ from django_pandas.io import read_frame
 import time
 import numpy as np
 
+from .recommender_algorithms import KNNWithAllUsersThresoledBias
+
 # limitations parameters
 MIN_RATING_COUNT_FOR_USER = 4
 MIN_RATING_COUNT_FOR_COURSE = 2
 
 
 # algorithm hyper parameters:
+ALG_MIN_SUPPORT = 2
+ALG_K = 7
+ALG_DIFF_BIAS_WEIGHT = 0.65
+ALG_DIFF_BIAS_THRESHOLD = 0.5
+ALG_WL_BIAS_WEIGHT = 0.95
+ALG_WL_BIAS_THRESHOLD = 1.8
 
 
 def filter_data(course_rating_df):
@@ -47,7 +55,23 @@ def recommend(user, course):
     course_rating_qs = CourseRating.objects.all()
     course_rating_df = read_frame(course_rating_qs, verbose=False)
 
+    # get filtered numpy arrays:
     X, y_diff, y_wl = filter_data(course_rating_df)
 
-    #return predicted_difficulty.est, predicted_workload.est, calc_time
+    # create algorithms and train them:
+    algo_diff = KNNWithAllUsersThresoledBias(k=ALG_K,
+                                             min_support=ALG_MIN_SUPPORT,
+                                             bias_weight=ALG_DIFF_BIAS_WEIGHT,
+                                             bias_threshold=ALG_DIFF_BIAS_THRESHOLD)
+    algo_wl = KNNWithAllUsersThresoledBias(k=ALG_K,
+                                           min_support=ALG_MIN_SUPPORT,
+                                           bias_weight=ALG_WL_BIAS_WEIGHT,
+                                           bias_threshold=ALG_WL_BIAS_THRESHOLD)
+
+    algo_diff.train(X, y_diff)
+    algo_wl.train(X, y_wl)
+
+    calc_time = time.time() - start_time
+
+    return algo_diff.predict((user, course)), algo_wl.predict((user, course)), calc_time
 
